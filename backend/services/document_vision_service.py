@@ -404,8 +404,8 @@ class DocumentVisionService:
                 confidence=0.95
             )
 
-        # 5. Ordered Handwritten Line Crops (up to first 25 lines)
-        for lc in layout.line_crops[:25]:
+        # 5. Ordered Handwritten Line Crops (all detected lines)
+        for lc in layout.line_crops:
             lx, ly, lw, lh = lc.bbox
             crop_img = binary_clean[ly:ly + lh, lx:lx + lw]
             crop_path = str(crops_dir / f"line_{lc.line_index:03d}.png")

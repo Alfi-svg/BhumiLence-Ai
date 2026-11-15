@@ -154,7 +154,7 @@ class LandExtractionService:
             doc_id=doc_id,
             deed_number=final_fields.get("deed_number"),
             deed_year=final_fields.get("deed_year"),
-            deed_type=final_fields.get("deed_type", DeedType.UNKNOWN),
+            deed_type=final_fields.get("deed_type") or DeedType.UNKNOWN,
             registration_date=final_fields.get("registration_date"),
             copy_issue_date=final_fields.get("copy_issue_date"),
             deed_value_bdt=final_fields.get("deed_value_bdt"),

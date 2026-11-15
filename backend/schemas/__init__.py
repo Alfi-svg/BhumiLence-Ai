@@ -29,6 +29,22 @@ from backend.schemas.htr_schema import (
     DocumentHTRResult,
     SCHEMA_VERSION as HTR_SCHEMA_VERSION
 )
+from backend.schemas.verification_schema import (
+    ValidationSeverity,
+    ValidationFlag,
+    LandUnitConversionResult,
+    SixteenAnaValidationResult,
+    StampDutyValidationResult,
+    ChronologyValidationResult,
+    VerificationReport
+)
+from backend.schemas.audit_schema import (
+    WorkflowState,
+    AuditRole,
+    AuditAction,
+    AuditEvent,
+    DocumentRecord
+)
 
 __all__ = [
     "DeedExtractionSchema",
@@ -52,5 +68,17 @@ __all__ = [
     "HTREngineType",
     "LineRecognitionResult",
     "DocumentHTRResult",
-    "HTR_SCHEMA_VERSION"
+    "HTR_SCHEMA_VERSION",
+    "ValidationSeverity",
+    "ValidationFlag",
+    "LandUnitConversionResult",
+    "SixteenAnaValidationResult",
+    "StampDutyValidationResult",
+    "ChronologyValidationResult",
+    "VerificationReport",
+    "WorkflowState",
+    "AuditRole",
+    "AuditAction",
+    "AuditEvent",
+    "DocumentRecord"
 ]

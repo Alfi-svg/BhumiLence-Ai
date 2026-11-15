@@ -154,14 +154,14 @@ class HTRService:
         """
         active_engine = engine or self.default_engine
         t0 = time.perf_counter()
-        crop_p = Path(crop_path)
+        crop_p = Path(crop_path) if crop_path else None
 
-        if not crop_p.exists() or crop_p.stat().st_size == 0:
+        if not crop_path or crop_p is None or not crop_p.is_file() or crop_p.stat().st_size == 0:
             return LineRecognitionResult(
                 line_id=f"line_{line_index:03d}",
                 line_index=line_index,
                 bbox=bbox,
-                evidence_crop_path=crop_path,
+                evidence_crop_path=crop_path or "",
                 raw_text="",
                 confidence=0.0,
                 uncertain_flag=True,
@@ -242,6 +242,8 @@ class HTRService:
         # 1. Recognize extracted handwritten line crops
         if doc_analysis.layout.line_crops:
             for lc in doc_analysis.layout.line_crops:
+                if not lc.crop_path or not Path(lc.crop_path).is_file():
+                    continue
                 line_res = self.recognize_line(
                     crop_path=lc.crop_path,
                     line_index=lc.line_index,
