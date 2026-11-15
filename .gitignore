@@ -1,5 +1,6 @@
 # Virtual Environments
 venv/
+venv*/
 .venv/
 .venv_ml/
 venv_ml/
@@ -10,6 +11,7 @@ env/
 __pycache__/
 *.py[cod]
 *$py.class
+.pytest_cache/
 
 # macOS Specific
 .DS_Store
@@ -18,12 +20,14 @@ __pycache__/
 
 # Datasets and Large Binary Files
 research/datasets/raw/
+research/datasets/processed/
 models/checkpoints/
 *.pt
 *.pth
 *.bin
 *.safetensors
 *.onnx
+*.gguf
 *.tar.gz
 *.zip
 
@@ -38,3 +42,4 @@ outputs/*
 .env
 .env.*
 !.env.example
+secrets/

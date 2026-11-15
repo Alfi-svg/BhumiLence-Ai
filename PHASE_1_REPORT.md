@@ -33,11 +33,17 @@ Phase 1 established a reproducible, production-grade foundation for **BhumiLens 
 
 ---
 
-## 4. Git Version Control Initialization
+## 4. Git Version Control & GitHub Remote Initialization
 
 * **Repository State:** Initialized clean Git repository (`.git`).
-* **Production `.gitignore`:** Excludes virtual environments (`venv/`, `.venv/`, `.venv_ml/`), Python caches (`__pycache__/`, `*.pyc`), OS metadata (`.DS_Store`), large model checkpoints (`*.pt`, `*.bin`, `*.safetensors`), database files (`*.db`, `*.sqlite`), and generated outputs.
-* **Baseline Commit:** `d250c99` (`chore: initial Phase 0 verified baseline`).
+* **Active Branch:** `main` (renamed from `master` via `git branch -M main`).
+* **GitHub Remote:** Connected to `https://github.com/Alfi-svg/BhumiLence-Ai.git` (verified with `git remote -v`).
+* **Remote Check:** `git ls-remote origin` confirmed the remote repository is an empty GitHub repo, ready for initial push.
+* **Production `.gitignore`:** Strict exclusion of virtual environments (`venv/`, `venv*/`, `.venv/`, `.venv_ml/`), bytecode (`__pycache__/`, `*.pyc`), OS metadata (`.DS_Store`), model weights (`*.pt`, `*.bin`, `*.safetensors`, `*.gguf`), databases (`*.db`, `*.sqlite`), and generated outputs.
+* **File Size Safety:** Confirmed 0 tracked files exceed 10MB (largest tracked file is `sample_data/sample_dolil_100_anonymized.jpg` at 247 KB).
+* **Baseline Commits:**
+  - `d250c99`: `chore: initial Phase 0 verified baseline`
+  - `b6b0908`: `feat(phase-1): setup python 3.11 ml env with mps and modular scaffolding`
 
 ---
 
