@@ -1,12 +1,26 @@
 """
 Pydantic Data Models & Schemas Package
 """
-from pydantic import BaseModel
-from typing import Dict, Any, Optional, List
+from backend.schemas.deed_schema import (
+    DeedExtractionSchema,
+    DeedType,
+    LandUnit,
+    Party,
+    LocationDetails,
+    LandDetails,
+    Boundaries,
+    FieldProvenance,
+    SCHEMA_VERSION
+)
 
-class DocumentResponse(BaseModel):
-    doc_id: str
-    detected_layout: str
-    workflow_state: str
-    fields: Dict[str, Any]
-    sha256_audit_hash: str
+__all__ = [
+    "DeedExtractionSchema",
+    "DeedType",
+    "LandUnit",
+    "Party",
+    "LocationDetails",
+    "LandDetails",
+    "Boundaries",
+    "FieldProvenance",
+    "SCHEMA_VERSION"
+]
