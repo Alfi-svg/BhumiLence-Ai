@@ -1,0 +1,4 @@
+opencv-python>=4.8.0
+numpy>=1.24.0
+# Optional for live local OCR on MacBook Air M2 (brew install tesseract tesseract-lang):
+# pytesseract>=0.3.10

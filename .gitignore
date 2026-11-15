@@ -1,0 +1,40 @@
+# Virtual Environments
+venv/
+.venv/
+.venv_ml/
+venv_ml/
+ENV/
+env/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS Specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Datasets and Large Binary Files
+research/datasets/raw/
+models/checkpoints/
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+*.tar.gz
+*.zip
+
+# Generated Outputs & Cache
+outputs/*
+!outputs/.gitkeep
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
