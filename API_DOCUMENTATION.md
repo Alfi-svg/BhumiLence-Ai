@@ -248,3 +248,85 @@ Verifies that the document's stored JSON content matches its SHA-256 seal. Detec
   "status": "VERIFIED_INTACT"
 }
 ```
+
+---
+
+## 7. Knowledge Base & Source-Grounded RAG Assistant (Agent 6)
+
+### `POST /api/v1/knowledge/query`
+Asks a natural language question in Bangla or English about Bangladeshi land laws, deed structures, Khatian types, or archaic 16-Ana share math. Returns source-grounded answers citing verified sections, or warns if evidence is insufficient (anti-hallucination guardrail).
+
+**Request Body**:
+```json
+{
+  "query": "সাফ কবলা ও বায়নাপত্রের পার্থক্য কী?",
+  "top_k": 3,
+  "similarity_threshold": 0.35
+}
+```
+
+**Response (200 OK — In-Domain Answered)**:
+```json
+{
+  "query": "সাফ কবলা ও বায়নাপত্রের পার্থক্য কী?",
+  "status": "ANSWERED",
+  "answer": "উৎস রেফারেন্স (বায়নাপত্র দলিল (Baynapatra / Agreement for Sale)) অনুসারে:\n\nবায়নাপত্র হলো সম্পত্তি বিক্রয়ের প্রাথমিক আইনি চুক্তিপত্র, যেখানে একটি নির্দিষ্ট সময়ের মধ্যে অবশিষ্ট পণমূল্য পরিশোধ সাপেক্ষে চূড়ান্ত সাফ-কবলা দলিল সম্পাদনের অঙ্গীকার থাকে। ২০০৪ সালের রেজিস্ট্রেশন (সংশোধন) আইন অনুসারে বায়নাপত্র রেজিস্ট্রি করা বাধ্যতামূলক।...\n\nসংযুক্ত কর্তৃপক্ষ ও প্রমিতি: STANDARD_LAND_LEXICON_BD (GOVERNMENT_GAZETTED)।",
+  "citations": [
+    {
+      "doc_id": "BD_LAND_KB_002",
+      "section_id": "SEC_DEED_BAYNAPATRA",
+      "source_title": "বায়নাপত্র দলিল (Baynapatra / Agreement for Sale)",
+      "source_authority": "STANDARD_LAND_LEXICON_BD",
+      "verified_status": "GOVERNMENT_GAZETTED",
+      "category": "DEED_TYPES",
+      "similarity_score": 0.5742,
+      "excerpt": "বায়নাপত্র হলো সম্পত্তি বিক্রয়ের প্রাথমিক আইনি চুক্তিপত্র, যেখানে একটি নির্দিষ্ট সময়ের মধ্যে অবশিষ্ট পণমূল্য পরিশোধ সাপেক্ষে চূড়ান্ত সাফ-কবলা দলিল সম্পাদনের অঙ্গীকার থাকে..."
+    }
+  ],
+  "top_score": 0.5742,
+  "model_used": "intfloat/multilingual-e5-small + TF-IDF Hybrid",
+  "legal_disclaimer": "আইনি সতর্কবার্তা: BhumiLens AI এর এই ব্যাখ্যা শুধুমাত্র তথ্যগত সহায়তা ও গবেষণার উদ্দেশ্যে প্রণীত। এটি কোনো আইনি পরামর্শ বা আদালতের রায় নয়। জমির চূড়ান্ত মালিকানা নির্ধারণের এখতিয়ার সহকারী কমিশনার (ভূমি), সাব-রেজিস্ট্রার ও উপযুক্ত আদালতের।"
+}
+```
+
+**Response (200 OK — Out-of-Domain Anti-Hallucination Refusal)**:
+```json
+{
+  "query": "মঙ্গল গ্রহে জমি কেনার নিয়ম কী?",
+  "status": "INSUFFICIENT_SOURCE_EVIDENCE",
+  "answer": "উৎস জ্ঞানভাণ্ডারে (Corpus) এই প্রশ্নের উত্তরের স্বপক্ষে পর্যাপ্ত রেফারেন্স মেলেনি। মনগড়া বা অনুমাননির্ভর তথ্য প্রদান নিষিদ্ধ।",
+  "citations": [],
+  "top_score": 0.0,
+  "model_used": "intfloat/multilingual-e5-small + TF-IDF Hybrid (Grounding Guardrail Active)",
+  "legal_disclaimer": "আইনি সতর্কবার্তা: BhumiLens AI এর এই ব্যাখ্যা শুধুমাত্র তথ্যগত সহায়তা ও গবেষণার উদ্দেশ্যে প্রণীত..."
+}
+```
+
+### `GET /api/v1/knowledge/explain-doc/{doc_id}`
+Cross-references a stored deed's extracted fields (`deed_type`, `land_unit`, `sixteen_ana_share`, `khatian_numbers`, `warnings`) against authoritative land laws and compiles an executive audit & provenance summary.
+
+**Response (200 OK)**:
+```json
+{
+  "doc_id": "DEED_100_SAMPLE",
+  "deed_number": "100",
+  "deed_type": "SAF_KABALA",
+  "pipeline_state": "AI_EXTRACTED_PENDING_MAKER",
+  "record_sha256": "bb13f54fa87323afd4c89861bef9762dc362248958218cf15424ae713db1a2a2",
+  "field_explanations": [
+    {
+      "field_name": "deed_type",
+      "extracted_value": "SAF_KABALA",
+      "knowledge_title": "সাফ-কবলা দলিল (Saf-Kabala Deed / Outright Sale Deed)",
+      "explanation": "সাফ-কবলা হলো চিরস্থায়ী বিক্রয় বা হস্তান্তরের চূড়ান্ত দলিল। এই দলিলের মাধ্যমে দাতা (বিক্রেতা) তাহার সম্পত্তির সমুদয় স্বত্ব, দখল ও মালিকানা গ্রহীতার (ক্রেতার) বরাবরে চিরতরে সমর্পণ করেন...",
+      "authority_reference": "STANDARD_LAND_LEXICON_BD"
+    }
+  ],
+  "audit_summary": "দলিল নম্বর 100 (প্রকৃতি: SAF_KABALA) এর ডিজিটাল রূপান্তর ও অডিট সম্পন্ন হয়েছে। বর্তমান লাইফসাইকেল স্ট্যাটাস: AI_EXTRACTED_PENDING_MAKER...",
+  "legal_disclaimer": "আইনি সতর্কবার্তা: BhumiLens AI এর এই ব্যাখ্যা শুধুমাত্র তথ্যগত সহায়তা ও গবেষণার উদ্দেশ্যে প্রণীত..."
+}
+```
+
+### `GET /api/v1/knowledge/corpus-stats`
+Returns the status, total indexed documents, topic categories, and embedding dimension of the offline knowledge base.
+

@@ -7,6 +7,7 @@ from backend.services.normalization_service import BanglaLandNormalizer, default
 from backend.services.extraction_service import LandExtractionService
 from backend.services.land_validation_service import LandValidationService
 from backend.services.audit_service import AuditPersistenceService
+from backend.services.rag_service import LandKnowledgeRAGService
 
 __all__ = [
     "DocumentVisionService",
@@ -15,5 +16,6 @@ __all__ = [
     "default_normalizer",
     "LandExtractionService",
     "LandValidationService",
-    "AuditPersistenceService"
+    "AuditPersistenceService",
+    "LandKnowledgeRAGService"
 ]

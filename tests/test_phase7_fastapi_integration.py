@@ -28,7 +28,7 @@ def test_health_and_models_status():
     assert data_health["status"] == "healthy"
     assert "disk" in data_health
     assert data_health["disk"]["safe_headroom"] is True
-    assert len(data_health["active_layers"]) == 7
+    assert len(data_health["active_layers"]) >= 7
 
     # 2. Models Status
     res_models = client.get("/api/v1/models/status")

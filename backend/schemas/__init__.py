@@ -45,6 +45,15 @@ from backend.schemas.audit_schema import (
     AuditEvent,
     DocumentRecord
 )
+from backend.schemas.rag_schema import (
+    RAGCitation,
+    RAGQueryRequest,
+    RAGQueryResponse,
+    RAGCorpusStats,
+    DeedFieldExplanation,
+    DeedExplanationResponse,
+    SCHEMA_VERSION as RAG_SCHEMA_VERSION
+)
 
 __all__ = [
     "DeedExtractionSchema",
@@ -80,5 +89,12 @@ __all__ = [
     "AuditRole",
     "AuditAction",
     "AuditEvent",
-    "DocumentRecord"
+    "DocumentRecord",
+    "RAGCitation",
+    "RAGQueryRequest",
+    "RAGQueryResponse",
+    "RAGCorpusStats",
+    "DeedFieldExplanation",
+    "DeedExplanationResponse",
+    "RAG_SCHEMA_VERSION"
 ]

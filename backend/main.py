@@ -120,7 +120,8 @@ async def health_check():
             "Layer 4: Bengali Handwritten Text Recognition (HTR)",
             "Layer 5: Bangla Land Normalization & SLM Extraction",
             "Layer 6: Deterministic Land Math & Chronology Verification",
-            "Layer 7: Maker-Checker Audit Persistence & Cryptographic Ledger"
+            "Layer 7: Maker-Checker Audit Persistence & Cryptographic Ledger",
+            "Layer 8: Local-First Source-Grounded Knowledge Assistant (RAG & Agent 6)"
         ]
     }
 
@@ -174,6 +175,18 @@ async def models_status():
                 "status": "ACTIVE",
                 "database_path": "outputs/bhumilens_records.db",
                 "four_eyes_enforced": True
+            },
+            "rag_knowledge_service": {
+                "type": "Hybrid Dense (multilingual-e5-small) + TF-IDF Lexical RAG",
+                "status": "OFFLINE_ACTIVE",
+                "embedding_path": "models/embeddings/multilingual-e5-small",
+                "corpus_path": "research/rag_corpus/land_knowledge_base.json",
+                "anti_hallucination_guardrail": True
+            },
+            "knowledge_audit_agent": {
+                "agent_id": "Agent 6",
+                "type": "Source-Grounded Land Knowledge & Document Auditor",
+                "status": "READY"
             }
         }
     }

@@ -25,6 +25,8 @@ research/htr/GraDeT-HTR/
 models/checkpoints/
 models/htr/pretrained_baseline/
 models/extractor/
+models/embeddings/
+outputs/rag_index/
 *.pt
 *.pth
 *.bin
