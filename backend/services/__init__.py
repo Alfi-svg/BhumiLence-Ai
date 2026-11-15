@@ -8,6 +8,12 @@ from backend.services.extraction_service import LandExtractionService
 from backend.services.land_validation_service import LandValidationService
 from backend.services.audit_service import AuditPersistenceService
 from backend.services.rag_service import LandKnowledgeRAGService
+from backend.services.anomaly_service import (
+    BhumiGuardService,
+    compute_dhash,
+    compute_hamming_distance,
+    IsolationForestScorer
+)
 
 __all__ = [
     "DocumentVisionService",
@@ -17,5 +23,9 @@ __all__ = [
     "LandExtractionService",
     "LandValidationService",
     "AuditPersistenceService",
-    "LandKnowledgeRAGService"
+    "LandKnowledgeRAGService",
+    "BhumiGuardService",
+    "compute_dhash",
+    "compute_hamming_distance",
+    "IsolationForestScorer"
 ]

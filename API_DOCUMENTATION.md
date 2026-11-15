@@ -330,3 +330,78 @@ Cross-references a stored deed's extracted fields (`deed_type`, `land_unit`, `si
 ### `GET /api/v1/knowledge/corpus-stats`
 Returns the status, total indexed documents, topic categories, and embedding dimension of the offline knowledge base.
 
+---
+
+## 8. BhumiGuard Intelligence (Agent 5 — Anomaly & Duplicate Detection)
+
+BhumiGuard provides defense-in-depth verification combining:
+1. **Visual & Cryptographic Duplicate Matching**: Exact SHA-256 and 64-bit perceptual `dHash` (Hamming distance $\le 8$ bits for near duplicates).
+2. **Deterministic Cross-Record Land Consistency Rules**:
+   - `CUMULATIVE_SHARE_EXCEEDED`: Cumulative transferred ownership share $> 1.0$ (16 Ana) on same Mouza + Dag + Khatian.
+   - `DUPLICATE_DEED_NUMBER_CONFLICT`: Same deed serial number registered in the same sub-registry office and year.
+   - `INVALID_CONSIDERATION_AMOUNT`: Saf-Kabala deed with zero or negative declared value.
+   - `SUSPICIOUS_VALUATION_OUTLIER`: Extreme valuation anomalies (e.g. 500 Shotok sold for 50 BDT).
+3. **Unsupervised Tabular Anomaly Scoring**: `scikit-learn` Isolation Forest trained on seed + augmented transaction distributions to detect high-dimensional outliers without arbitrary fraud labels.
+
+> **Ethical Governance Rule**: BhumiGuard outputs factual risk levels (`RISK_LOW`, `RISK_MEDIUM`, `RISK_HIGH_REVIEW_REQUIRED`), rule violations, and statistical outlier explanations with mandatory disclaimers. It NEVER labels any person or deed as "fraudulent".
+
+### `POST /api/v1/verify/bhumiguard-scan`
+Runs on-demand BhumiGuard multi-layered risk evaluation on a deed payload and optional image.
+
+**Request Body**:
+```json
+{
+  "doc_id": "DEED_SCAN_REQ_01",
+  "image_path": "sample_data/sample_dolil_100_anonymized.jpg",
+  "extracted_data": {
+    "deed_number": "4521",
+    "deed_year": 2021,
+    "deed_type": "SAF_KABALA",
+    "registration_office": "কালিয়াকৈর সাব-রেজিস্ট্রি",
+    "location": { "mouza": "চাপাইর" },
+    "land_details": {
+      "dag_numbers": ["104"],
+      "khatian_numbers": ["502"],
+      "land_area": 12.0,
+      "land_unit": "SHOTOK",
+      "ownership_share": 0.50
+    },
+    "deed_value_bdt": 1200000.0,
+    "stamp_duty_bdt": 36000.0
+  }
+}
+```
+
+**Response (200 OK)**:
+```json
+{
+  "schema_version": "1.0.0",
+  "doc_id": "DEED_SCAN_REQ_01",
+  "risk_level": "RISK_LOW",
+  "risk_score": 0.1076,
+  "duplicate_matches": [],
+  "rule_violations": [],
+  "anomaly_score": 0.3075,
+  "anomaly_explanation_bn": "লেনদেনের সংখ্যাগত মেট্রিকসমূহ সাধারণ রেফারেন্স রেঞ্জের মধ্যে স্বাভাবিক রয়েছে।",
+  "feature_contributions": [
+    {
+      "feature_name": "land_area_shotok",
+      "value": 12.0,
+      "expected_range": "0.00 - 45.32",
+      "is_outlier": false
+    },
+    {
+      "feature_name": "value_per_shotok",
+      "value": 100000.0,
+      "expected_range": "0.00 - 245000.00",
+      "is_outlier": false
+    }
+  ],
+  "disclaimer": "আইনি সতর্কবার্তা: এই অ্যানোমালি ও রিস্ক রিপোর্ট শুধুমাত্র মানুষের পর্যালোচনার (Maker-Checker Review) জন্য প্রস্তুতকৃত স্ট্যাটিস্টিক্যাল ও লজিক্যাল সতর্কতা। এটি কোনো জালিয়াতি বা অপরাধের আইনি প্রমাণ নয়।"
+}
+```
+
+### `GET /api/v1/verify/bhumiguard/{doc_id}`
+Retrieves a registered document from the audit database and performs complete BhumiGuard duplicate, conflict rule, and anomaly scoring.
+
+

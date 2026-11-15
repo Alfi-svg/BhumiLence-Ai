@@ -5,6 +5,7 @@ from backend.agents.document_agent import DocumentIntelligenceAgent, DocumentAge
 from backend.agents.htr_agent import HTRAgent
 from backend.agents.extraction_agent import LandInformationExtractionAgent, ExtractionAgent
 from backend.agents.verification_agent import VerificationAgent
+from backend.agents.bhumiguard_agent import BhumiGuardAgent
 from backend.agents.supervisor import BhumiLensSupervisor, SupervisorAgent
 from backend.agents.knowledge_audit_agent import KnowledgeAuditAgent
 
@@ -15,6 +16,7 @@ __all__ = [
     "LandInformationExtractionAgent",
     "ExtractionAgent",
     "VerificationAgent",
+    "BhumiGuardAgent",
     "BhumiLensSupervisor",
     "SupervisorAgent",
     "KnowledgeAuditAgent"

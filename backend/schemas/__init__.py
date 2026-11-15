@@ -54,6 +54,17 @@ from backend.schemas.rag_schema import (
     DeedExplanationResponse,
     SCHEMA_VERSION as RAG_SCHEMA_VERSION
 )
+from backend.schemas.bhumiguard_schema import (
+    RiskLevel,
+    DuplicateMatchType,
+    DuplicateMatch,
+    ConflictRuleType,
+    RuleViolation,
+    FeatureContribution,
+    BhumiGuardReport,
+    BhumiGuardScanRequest,
+    SCHEMA_VERSION as BHUMIGUARD_SCHEMA_VERSION
+)
 
 __all__ = [
     "DeedExtractionSchema",
@@ -96,5 +107,14 @@ __all__ = [
     "RAGCorpusStats",
     "DeedFieldExplanation",
     "DeedExplanationResponse",
-    "RAG_SCHEMA_VERSION"
+    "RAG_SCHEMA_VERSION",
+    "RiskLevel",
+    "DuplicateMatchType",
+    "DuplicateMatch",
+    "ConflictRuleType",
+    "RuleViolation",
+    "FeatureContribution",
+    "BhumiGuardReport",
+    "BhumiGuardScanRequest",
+    "BHUMIGUARD_SCHEMA_VERSION"
 ]

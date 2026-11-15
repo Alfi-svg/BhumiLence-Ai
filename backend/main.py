@@ -80,6 +80,7 @@ async def root():
             "documents": "/api/v1/documents",
             "process": "/api/v1/process/run",
             "verify": "/api/v1/verify/validate-json",
+            "bhumiguard": "/api/v1/verify/bhumiguard-scan",
             "review": "/api/v1/review",
             "audit": "/api/v1/audit",
             "knowledge": "/api/v1/knowledge/gazetteer"
@@ -121,7 +122,8 @@ async def health_check():
             "Layer 5: Bangla Land Normalization & SLM Extraction",
             "Layer 6: Deterministic Land Math & Chronology Verification",
             "Layer 7: Maker-Checker Audit Persistence & Cryptographic Ledger",
-            "Layer 8: Local-First Source-Grounded Knowledge Assistant (RAG & Agent 6)"
+            "Layer 8: Local-First Source-Grounded Knowledge Assistant (RAG & Agent 6)",
+            "Layer 9: BhumiGuard Perceptual Duplicate & Tabular Anomaly Intelligence (Agent 5)"
         ]
     }
 
@@ -187,6 +189,12 @@ async def models_status():
                 "agent_id": "Agent 6",
                 "type": "Source-Grounded Land Knowledge & Document Auditor",
                 "status": "READY"
+            },
+            "bhumiguard_intelligence": {
+                "agent_id": "Agent 5",
+                "type": "Perceptual dHash (64-bit) + Cross-Record Rules + Isolation Forest",
+                "status": "ACTIVE",
+                "features": ["Exact SHA-256", "Hamming Perceptual dHash", "Over-transfer >16 Ana", "Isolation Forest Outlier Scoring"]
             }
         }
     }

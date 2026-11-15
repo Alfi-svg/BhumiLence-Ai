@@ -19,6 +19,7 @@ from backend.agents.document_agent import DocumentIntelligenceAgent
 from backend.agents.htr_agent import HTRAgent
 from backend.agents.extraction_agent import LandInformationExtractionAgent
 from backend.agents.verification_agent import VerificationAgent
+from backend.agents.bhumiguard_agent import BhumiGuardAgent
 from backend.services.audit_service import AuditPersistenceService
 from backend.schemas.htr_schema import HTREngineType
 
@@ -47,6 +48,7 @@ class BhumiLensSupervisor:
         self.agent_2_htr = HTRAgent(default_engine=htr_engine)
         self.agent_3_extraction = LandInformationExtractionAgent(model_mode=extraction_mode)
         self.agent_4_verification = VerificationAgent()
+        self.agent_5_bhumiguard = BhumiGuardAgent(db_path=db_path)
 
     def process_document(
         self,
@@ -99,7 +101,21 @@ class BhumiLensSupervisor:
                     latencies_ms["stage_4_verification_ms"], verification_report.is_valid, verification_report.score)
 
         # ---------------------------------------------------------------------
-        # Stage 5: Layer 7 Audit Persistence & Cryptographic SHA-256 Hashing
+        # Stage 5: BhumiGuard Intelligence Anomaly & Duplicate Detection (Agent 5)
+        # ---------------------------------------------------------------------
+        t0 = time.perf_counter()
+        bhumiguard_report = self.agent_5_bhumiguard.scan_deed(
+            deed_input=extraction_schema,
+            image_path=str(image_path),
+            target_sha256=vision_result.image_sha256,
+            doc_id=target_doc_id
+        )
+        latencies_ms["stage_5_bhumiguard_ms"] = round((time.perf_counter() - t0) * 1000.0, 2)
+        logger.info("[Supervisor] Stage 5 BhumiGuard completed in %.2f ms (Risk Level: %s, Score: %.2f)",
+                    latencies_ms["stage_5_bhumiguard_ms"], bhumiguard_report.risk_level.value, bhumiguard_report.risk_score)
+
+        # ---------------------------------------------------------------------
+        # Stage 6: Layer 7 Audit Persistence & Cryptographic SHA-256 Hashing
         # ---------------------------------------------------------------------
         t0 = time.perf_counter()
         evidence_manifest = {
@@ -108,7 +124,9 @@ class BhumiLensSupervisor:
             "dimensions": vision_result.quality.dimensions.model_dump(),
             "crops_count": len(vision_result.evidence_crops),
             "line_crops_count": len(vision_result.layout.line_crops),
-            "field_crops": extraction_schema.provenance.evidence_crops
+            "field_crops": extraction_schema.provenance.evidence_crops,
+            "bhumiguard_risk_level": bhumiguard_report.risk_level.value,
+            "bhumiguard_risk_score": bhumiguard_report.risk_score
         }
 
         doc_record = self.audit_service.create_initial_record(
@@ -119,7 +137,7 @@ class BhumiLensSupervisor:
             evidence_manifest=evidence_manifest,
             actor_id=actor_id
         )
-        latencies_ms["stage_5_audit_persistence_ms"] = round((time.perf_counter() - t0) * 1000.0, 2)
+        latencies_ms["stage_6_audit_persistence_ms"] = round((time.perf_counter() - t0) * 1000.0, 2)
         latencies_ms["total_pipeline_ms"] = round((time.perf_counter() - t_total_start) * 1000.0, 2)
 
         pipeline_output = {
@@ -142,6 +160,7 @@ class BhumiLensSupervisor:
             },
             "extracted_deed": extraction_schema.to_canonical_dict(),
             "verification_report": verification_report.model_dump(),
+            "bhumiguard_report": bhumiguard_report.model_dump(),
             "evidence_manifest": evidence_manifest,
             "stage_latencies_ms": latencies_ms,
             "legal_disclaimer": LEGAL_DISCLAIMER

@@ -409,3 +409,31 @@ class AuditPersistenceService:
                 cur.execute("SELECT doc_id, pipeline_state, current_record_sha256, maker_id, checker_id, updated_at_utc FROM documents ORDER BY updated_at_utc DESC LIMIT ?", (limit,))
             rows = cur.fetchall()
             return [dict(r) for r in rows]
+
+    def get_all_documents(self, limit: int = 200) -> List[DocumentRecord]:
+        """
+        Retrieves full DocumentRecord instances for all registered documents.
+        """
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM documents ORDER BY updated_at_utc DESC LIMIT ?", (limit,))
+            rows = cur.fetchall()
+            results: List[DocumentRecord] = []
+            for row in rows:
+                results.append(DocumentRecord(
+                    doc_id=row["doc_id"],
+                    original_image_sha256=row["original_image_sha256"],
+                    pipeline_state=WorkflowState(row["pipeline_state"]),
+                    extracted_data=json.loads(row["extracted_json"]),
+                    human_corrected_data=json.loads(row["human_corrected_json"]) if row["human_corrected_json"] else None,
+                    verification_report=json.loads(row["verification_report_json"]) if row["verification_report_json"] else None,
+                    evidence_manifest=json.loads(row["evidence_manifest_json"]) if row["evidence_manifest_json"] else None,
+                    current_record_sha256=row["current_record_sha256"],
+                    created_at_utc=row["created_at_utc"],
+                    updated_at_utc=row["updated_at_utc"],
+                    maker_id=row["maker_id"],
+                    checker_id=row["checker_id"],
+                    audit_trail=[],
+                    legal_disclaimer=LEGAL_DISCLAIMER
+                ))
+            return results

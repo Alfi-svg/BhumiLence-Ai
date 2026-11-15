@@ -10,12 +10,17 @@ from pydantic import BaseModel, Field
 from fastapi import APIRouter, HTTPException
 
 from backend.schemas.deed_schema import DeedExtractionSchema, LandUnit
+from backend.schemas.bhumiguard_schema import BhumiGuardScanRequest, BhumiGuardReport
 from backend.services.land_validation_service import LandValidationService, LandUnitConverter, SixteenAnaValidator
+from backend.services.audit_service import AuditPersistenceService
 from backend.agents.verification_agent import VerificationAgent
+from backend.agents.bhumiguard_agent import BhumiGuardAgent
 
 router = APIRouter(prefix="/verify", tags=["verification"])
 validation_service = LandValidationService()
 verification_agent = VerificationAgent(validation_service=validation_service)
+audit_service = AuditPersistenceService()
+bhumiguard_agent = BhumiGuardAgent()
 
 class UnitConvertRequest(BaseModel):
     area: float = Field(..., gt=0, description="Numerical land area")
@@ -62,3 +67,40 @@ async def calculate_sixteen_ana_share(payload: ShareCalculateRequest):
     """
     res = SixteenAnaValidator.parse_notation(payload.share_notation)
     return res.model_dump()
+
+@router.post("/bhumiguard-scan")
+async def scan_deed_bhumiguard(request: BhumiGuardScanRequest):
+    """
+    Executes on-demand multi-layered BhumiGuard Intelligence scan on deed data and optional image.
+    """
+    try:
+        report = await bhumiguard_agent.ascan_deed(
+            deed_input=request.extracted_data or {"doc_id": request.doc_id},
+            image_path=request.image_path,
+            doc_id=request.doc_id
+        )
+        return report.model_dump()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"BhumiGuard scan failed: {str(e)}")
+
+@router.get("/bhumiguard/{doc_id}")
+async def get_bhumiguard_report(doc_id: str):
+    """
+    Retrieves document from persistence DB and executes complete BhumiGuard Intelligence scan.
+    """
+    doc = audit_service.get_document(doc_id)
+    if not doc:
+        raise HTTPException(status_code=404, detail=f"Document '{doc_id}' not found in audit database.")
+
+    image_path = None
+    if doc.evidence_manifest and isinstance(doc.evidence_manifest, dict):
+        image_path = doc.evidence_manifest.get("image_path")
+
+    report = await bhumiguard_agent.ascan_deed(
+        deed_input=doc.extracted_data or {},
+        image_path=image_path,
+        target_sha256=doc.original_image_sha256,
+        doc_id=doc.doc_id
+    )
+    return report.model_dump()
+
