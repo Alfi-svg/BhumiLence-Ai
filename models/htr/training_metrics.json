@@ -1,0 +1,46 @@
+{
+  "model_name": "BhumiLens-HTR-v1-pilot",
+  "architecture": "CRNN (CNN + BiLSTM + CTC)",
+  "device": "mps",
+  "epochs": 6,
+  "training_duration_seconds": 21.02,
+  "best_val_cer": 0.9895,
+  "epoch_history": [
+    {
+      "epoch": 1,
+      "train_loss": 11.5132,
+      "val_loss": 5.0225,
+      "val_cer": 1.0147
+    },
+    {
+      "epoch": 2,
+      "train_loss": 4.5286,
+      "val_loss": 4.1015,
+      "val_cer": 1.0147
+    },
+    {
+      "epoch": 3,
+      "train_loss": 3.9615,
+      "val_loss": 3.7683,
+      "val_cer": 1.0147
+    },
+    {
+      "epoch": 4,
+      "train_loss": 3.6832,
+      "val_loss": 3.7141,
+      "val_cer": 1.0062
+    },
+    {
+      "epoch": 5,
+      "train_loss": 3.5403,
+      "val_loss": 3.6207,
+      "val_cer": 0.9965
+    },
+    {
+      "epoch": 6,
+      "train_loss": 3.4631,
+      "val_loss": 3.666,
+      "val_cer": 0.9895
+    }
+  ]
+}

@@ -21,7 +21,9 @@ __pycache__/
 # Datasets and Large Binary Files
 research/datasets/raw/
 research/datasets/processed/
+research/htr/GraDeT-HTR/
 models/checkpoints/
+models/htr/pretrained_baseline/
 *.pt
 *.pth
 *.bin

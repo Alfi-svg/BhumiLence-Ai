@@ -1,0 +1,567 @@
+{
+  "engine": "EasyOCR Pretrained Bengali Baseline (CRAFT + ResNet-BiLSTM-CTC)",
+  "test_sample_count": 50,
+  "overall_cer": 0.7601,
+  "overall_wer": 1.0711,
+  "average_latency_ms": 898.02,
+  "samples": [
+    {
+      "sample_id": "bn_htrd_line_50_4_1",
+      "level": "LINE",
+      "ground_truth": "ঠিক ছয় মাস আগে ২১শে জানুয়ারি বাংলাদেশে",
+      "prediction": "চিক জয 11স) সগা  >১ ানয়যার ব্রাস'ন7দে7",
+      "confidence": 0.206,
+      "cer": 0.6,
+      "wer": 1.0,
+      "latency_ms": 1460.15
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_3",
+      "level": "LINE",
+      "ground_truth": "শুরুতে অবশ্য বর্তমানের আরটি - পিসিআর টেস্ট করেনি",
+      "prediction": "_ত জয7শ] প্রতশ্ানর পাগ্রতার গয়েন ঢ0মট জয়া্",
+      "confidence": 0.252,
+      "cer": 0.7917,
+      "wer": 1.0,
+      "latency_ms": 1897.49
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_2",
+      "level": "LINE",
+      "ground_truth": "করোনাভাইরাস পরীক্ষার শুরু অল্প কিছু কিট ছিল ।",
+      "prediction": "দরোনাভগরাস পরাপ্মার সস্্স ক্চ চছিল ক্রছু",
+      "confidence": 0.37,
+      "cer": 0.5556,
+      "wer": 1.0,
+      "latency_ms": 1054.27
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_6",
+      "level": "LINE",
+      "ground_truth": "কন্টেইনার চট্টগ্রাম বন্দরে খালাসের পর কাভার্ড ভ্যানে",
+      "prediction": "[/ ভ্যানে হূম্নার চডগ্রাম পনদেরে খামা দ্্ভাভ স",
+      "confidence": 0.323,
+      "cer": 0.6923,
+      "wer": 1.1429,
+      "latency_ms": 2697.76
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_7",
+      "level": "LINE",
+      "ground_truth": "সড়কপথে আখাউড়া স্থলবন্দর হয়ে ভারতের ত্রিপুরা ও",
+      "prediction": "74,^{ বিপুরা `9 [আ4্রভড় সবনর 50 } $ সড ^10",
+      "confidence": 0.14,
+      "cer": 0.8542,
+      "wer": 1.4286,
+      "latency_ms": 2201.39
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_5",
+      "level": "LINE",
+      "ground_truth": "পরীক্ষামূলকভাবে আসা জাহাজে থাকা চারটি",
+      "prediction": "4 39 390 @ 9[747 চারাঢ 9যা>11 জাহাে 97স| পরক্ষামলকভা",
+      "confidence": 0.288,
+      "cer": 1.1081,
+      "wer": 2.0,
+      "latency_ms": 2246.16
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_4",
+      "level": "LINE",
+      "ground_truth": "আইইডিসিআর , ব্যবহার করেছিল আরেকটি পদ্ধতি ।",
+      "prediction": "পত্বতি' আআহ্হ্াভাগআর 7 ব্যবহার দরো 4 আবকাচ",
+      "confidence": 0.28,
+      "cer": 0.8571,
+      "wer": 1.0,
+      "latency_ms": 1235.66
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_12",
+      "level": "LINE",
+      "ground_truth": "গত সাত দিনে কোন নায়কের আবির্ভাব না হলেও ,",
+      "prediction": "নয়কেের সাবোধ স1 273, >1ত` 919 {ম",
+      "confidence": 0.212,
+      "cer": 0.881,
+      "wer": 1.0,
+      "latency_ms": 1634.41
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_9",
+      "level": "LINE",
+      "ground_truth": "গরু চোরাচালানে জড়িত বলে ভারত ও বাংলাদেশের দুই",
+      "prediction": "47 সবত 9)) কস'সাদেশের দু2 514 গোোরোঢIসা ডাঙত",
+      "confidence": 0.308,
+      "cer": 0.9348,
+      "wer": 1.0,
+      "latency_ms": 2213.85
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_8",
+      "level": "LINE",
+      "ground_truth": "আসাম প্রদেশে যাবে ।",
+      "prediction": "পসাাস খদ্শ দ্রাযহে'",
+      "confidence": 0.375,
+      "cer": 0.7895,
+      "wer": 1.0,
+      "latency_ms": 572.8
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_13",
+      "level": "LINE",
+      "ground_truth": "বাংলাদেশে একজন খলনায়ক যে তৈরি হয়েছে তা",
+      "prediction": "03 খদনায়ক গস ত41 তয়ছে বীসাদযশ` থzডান",
+      "confidence": 0.199,
+      "cer": 0.875,
+      "wer": 1.0,
+      "latency_ms": 1501.2
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_11",
+      "level": "LINE",
+      "ground_truth": "করেছে , তার নজির বিরল ।",
+      "prediction": "1`ব [যচচ , তাও",
+      "confidence": 0.163,
+      "cer": 0.8696,
+      "wer": 1.0,
+      "latency_ms": 836.46
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_10",
+      "level": "LINE",
+      "ground_truth": "সীমান্তরক্ষী বাহিনী যেভাবে প্রকাশ্যে পরস্পরকে দায়ী",
+      "prediction": "()91>^7021 >7 ঠ02নী যেভাবে প্রকাশে) পকব্কে গ্াস্মান্তকম্মা দায়া",
+      "confidence": 0.286,
+      "cer": 0.7255,
+      "wer": 1.1667,
+      "latency_ms": 2471.23
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_14",
+      "level": "LINE",
+      "ground_truth": "নিয়ে কোন সন্দেহ নেই ।",
+      "prediction": "সিচয করামে ঘচন্দপ",
+      "confidence": 0.188,
+      "cer": 0.8182,
+      "wer": 1.0,
+      "latency_ms": 660.34
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_15",
+      "level": "LINE",
+      "ground_truth": "করোনাভাইরাস জনিত মহামারিতে সৃষ্ট আর্থ - সামাজিক",
+      "prediction": "40 মযাক্ন্য়িত্ে [মথ > সাম্মযাজ ক্য়োনাভ হরামর- সৃষ্ট গানত",
+      "confidence": 0.248,
+      "cer": 0.9787,
+      "wer": 1.2857,
+      "latency_ms": 1536.42
+    },
+    {
+      "sample_id": "bn_htrd_line_50_4_16",
+      "level": "LINE",
+      "ground_truth": "ভোগান্তি উচ্চবর্গের তুলনায় দৃশ্যত নিম্নবর্গের উপরেই বেশি ।",
+      "prediction": "240 ( ^ পশ)ত নিন্ন-গরের পপরহে  যোেশ| ভোগযন্ড ডচ্চগরের ররসনায়",
+      "confidence": 0.241,
+      "cer": 0.8983,
+      "wer": 1.25,
+      "latency_ms": 2182.05
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_6",
+      "level": "LINE",
+      "ground_truth": "এখনো নয় ।",
+      "prediction": "সব েখন1",
+      "confidence": 0.15,
+      "cer": 0.9,
+      "wer": 1.0,
+      "latency_ms": 315.62
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_7",
+      "level": "LINE",
+      "ground_truth": "ইনজুরি শঙ্কাও আছে ।",
+      "prediction": "জ ১০৭ ক্] ও [মচচ",
+      "confidence": 0.597,
+      "cer": 0.7895,
+      "wer": 1.25,
+      "latency_ms": 513.27
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_5",
+      "level": "LINE",
+      "ground_truth": "অভিজ্ঞতা ও তারুণ্যের মিশেল ; তবে পুরোপুরি পরীক্ষিত",
+      "prediction": "[আেজ্ঞৃতা তারুণৈ্যের :) 964 পুরোপুরি . পরীকষিত",
+      "confidence": 0.335,
+      "cer": 0.4,
+      "wer": 1.0,
+      "latency_ms": 1024.07
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_4",
+      "level": "LINE",
+      "ground_truth": "পেস অ্যাটাক ।",
+      "prediction": "6স15) অ্যাঢাদ্র",
+      "confidence": 0.292,
+      "cer": 0.6923,
+      "wer": 1.0,
+      "latency_ms": 247.8
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_1",
+      "level": "LINE",
+      "ground_truth": "দলের পেস অ্যাটাক নিয়ে আশাবাদী ওয়ালশ",
+      "prediction": "দগের C1ৎ [অ্যাঢাক আশাবাদা ওয়া স> {ন4",
+      "confidence": 0.257,
+      "cer": 0.5405,
+      "wer": 1.1667,
+      "latency_ms": 926.34
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_3",
+      "level": "LINE",
+      "ground_truth": "আবু জায়েদ চৌধুরি ও সাইফুদ্দিনকে নিয়ে বাংলাদেশের",
+      "prediction": "জয়চ চাকলার 9 মরহমুচুাদ্দন কেে নিযে 4াস'6দচশ, 414",
+      "confidence": 0.385,
+      "cer": 0.6939,
+      "wer": 1.1429,
+      "latency_ms": 1161.1
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_2",
+      "level": "LINE",
+      "ground_truth": "মাশরাফীর নেতৃত্বে মুস্তাফিজুর রহমান , রুবেল হোসেন ,",
+      "prediction": "গশরাফার মতয মুস্তাাফজ? বহসান ? রুবে 27s)ন",
+      "confidence": 0.444,
+      "cer": 0.4706,
+      "wer": 1.0,
+      "latency_ms": 940.62
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_9",
+      "level": "LINE",
+      "ground_truth": "নিতে হবে । কোথাও একটু ওভারকাস্ট থাকতে পারে আবার",
+      "prediction": "হযে` {োোথাও থচু 97ফক পারে 9)7373 ওভাবদোস্য",
+      "confidence": 0.217,
+      "cer": 0.7872,
+      "wer": 1.0,
+      "latency_ms": 1061.1
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_8",
+      "level": "LINE",
+      "ground_truth": "' ইংল্যান্ডে ধারাবাহিকতা আসল । কন্ডিশনের সাথে দ্রুত মানিয়ে",
+      "prediction": "04 তূ>ল্যানে ধায়ামযহূকত] 9াসী7 নশনৈব প্রাথে দুস মামিয়ে",
+      "confidence": 0.199,
+      "cer": 0.5424,
+      "wer": 1.0,
+      "latency_ms": 1104.53
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_10",
+      "level": "LINE",
+      "ground_truth": "কোথাও একেবারে ফ্লাট উইকেট । ওভালের সাথে কার্ডিফের",
+      "prediction": "তক্টে ডা7 97থ কডফের 'রখও গকযায; ফ্লাঢ",
+      "confidence": 0.457,
+      "cer": 0.8163,
+      "wer": 1.0,
+      "latency_ms": 1324.26
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_11",
+      "level": "LINE",
+      "ground_truth": "পার্থক্য থাকবে আর সেটা দ্রুত বুঝে নিতে হবে । সেভাবেই",
+      "prediction": "73 গৌৌঢা দুত ঘুঝ হয়ে   সৌৌডাব2 সাথক 904<",
+      "confidence": 0.308,
+      "cer": 0.8462,
+      "wer": 1.0,
+      "latency_ms": 1567.34
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_13",
+      "level": "LINE",
+      "ground_truth": "করছি আমি ' ।",
+      "prediction": "করদ সযাক্ম",
+      "confidence": 0.223,
+      "cer": 0.75,
+      "wer": 1.0,
+      "latency_ms": 291.05
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_12",
+      "level": "LINE",
+      "ground_truth": "গেমপ্ল্যান সাজাতে হবে , আমার বোলারদেরও সেভাবে প্রস্তুত",
+      "prediction": "দোনারদ)ও গভায বথ্তুত গমপলযান গাজাত দুঢ; আামায়",
+      "confidence": 0.352,
+      "cer": 0.8889,
+      "wer": 1.0,
+      "latency_ms": 1619.95
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_16",
+      "level": "LINE",
+      "ground_truth": "উইকেট শিকারী ওয়ালশ ।",
+      "prediction": "হকে শশপব্রাঠা শযরাসেশ",
+      "confidence": 0.241,
+      "cer": 0.7619,
+      "wer": 1.0,
+      "latency_ms": 772.04
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_17",
+      "level": "LINE",
+      "ground_truth": "ছবির উৎস , MUNIR UZ ZAMAN",
+      "prediction": "সৃবয 39, MUNT )E ZAMAN",
+      "confidence": 0.395,
+      "cer": 0.48,
+      "wer": 0.8333,
+      "latency_ms": 747.24
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_15",
+      "level": "LINE",
+      "ground_truth": "না সেটাও মনে করিয়ে দিয়েছেন প্রথম 500 টেস্ট",
+      "prediction": "স্ৌঢা ও পেরয়ে খথস 1600 77 দয়চন",
+      "confidence": 0.281,
+      "cer": 0.7955,
+      "wer": 1.0,
+      "latency_ms": 1064.52
+    },
+    {
+      "sample_id": "bn_htrd_line_50_2_14",
+      "level": "LINE",
+      "ground_truth": "তবে বিশ্বকাপের উইকেট যে বোলারদের জন্য সহজ হবে",
+      "prediction": "বেশ্বকাপ তকরেচ য ATTZJ ডন সসূডা 9 তয",
+      "confidence": 0.401,
+      "cer": 0.6667,
+      "wer": 1.0,
+      "latency_ms": 1430.44
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_2_5",
+      "level": "WORD",
+      "ground_truth": "কিছু",
+      "prediction": "2%",
+      "confidence": 0.599,
+      "cer": 1.0,
+      "wer": 1.0,
+      "latency_ms": 119.12
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_2_4",
+      "level": "WORD",
+      "ground_truth": "অল্প",
+      "prediction": "",
+      "confidence": 0.0,
+      "cer": 1.25,
+      "wer": 1.0,
+      "latency_ms": 49.56
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_2_6",
+      "level": "WORD",
+      "ground_truth": "কিট",
+      "prediction": "",
+      "confidence": 0.0,
+      "cer": 1.6667,
+      "wer": 1.0,
+      "latency_ms": 52.56
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_2_7",
+      "level": "WORD",
+      "ground_truth": "ছিল",
+      "prediction": "",
+      "confidence": 0.0,
+      "cer": 1.6667,
+      "wer": 1.0,
+      "latency_ms": 48.25
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_2_3",
+      "level": "WORD",
+      "ground_truth": "শুরু",
+      "prediction": "",
+      "confidence": 0.0,
+      "cer": 1.25,
+      "wer": 1.0,
+      "latency_ms": 76.29
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_2_2",
+      "level": "WORD",
+      "ground_truth": "পরীক্ষার",
+      "prediction": "পব্রান্মার",
+      "confidence": 0.439,
+      "cer": 0.625,
+      "wer": 1.0,
+      "latency_ms": 139.0
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_2_1",
+      "level": "WORD",
+      "ground_truth": "করোনাভাইরাস",
+      "prediction": "দব্োনাভবা্য",
+      "confidence": 0.071,
+      "cer": 0.7273,
+      "wer": 1.0,
+      "latency_ms": 382.64
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_2_8",
+      "level": "WORD",
+      "ground_truth": "।",
+      "prediction": "",
+      "confidence": 0.0,
+      "cer": 5.0,
+      "wer": 1.0,
+      "latency_ms": 17.93
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_5_1",
+      "level": "WORD",
+      "ground_truth": "পরীক্ষামূলকভাবে",
+      "prediction": "পসরক্ষামসকভা",
+      "confidence": 0.196,
+      "cer": 0.4,
+      "wer": 1.0,
+      "latency_ms": 269.59
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_5_3",
+      "level": "WORD",
+      "ground_truth": "জাহাজে",
+      "prediction": "জাহাে",
+      "confidence": 0.367,
+      "cer": 0.1667,
+      "wer": 1.0,
+      "latency_ms": 168.41
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_5_2",
+      "level": "WORD",
+      "ground_truth": "আসা",
+      "prediction": "9যা1> 1",
+      "confidence": 0.109,
+      "cer": 2.0,
+      "wer": 2.0,
+      "latency_ms": 148.5
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_5_5",
+      "level": "WORD",
+      "ground_truth": "চারটি",
+      "prediction": "চায়াঢ",
+      "confidence": 0.299,
+      "cer": 0.8,
+      "wer": 1.0,
+      "latency_ms": 163.55
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_5_4",
+      "level": "WORD",
+      "ground_truth": "থাকা",
+      "prediction": "9[747",
+      "confidence": 0.393,
+      "cer": 1.25,
+      "wer": 1.0,
+      "latency_ms": 113.28
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_4_3",
+      "level": "WORD",
+      "ground_truth": "ব্যবহার",
+      "prediction": "ব্যহার",
+      "confidence": 0.259,
+      "cer": 0.1429,
+      "wer": 1.0,
+      "latency_ms": 139.04
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_4_2",
+      "level": "WORD",
+      "ground_truth": ",",
+      "prediction": "]",
+      "confidence": 0.252,
+      "cer": 1.0,
+      "wer": 1.0,
+      "latency_ms": 60.81
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_4_1",
+      "level": "WORD",
+      "ground_truth": "আইইডিসিআর",
+      "prediction": "আহ্হাভাগআার",
+      "confidence": 0.383,
+      "cer": 0.8889,
+      "wer": 1.0,
+      "latency_ms": 275.12
+    },
+    {
+      "sample_id": "bn_htrd_word_50_4_4_5",
+      "level": "WORD",
+      "ground_truth": "আরেকটি",
+      "prediction": "থ4ক",
+      "confidence": 0.214,
+      "cer": 0.8333,
+      "wer": 1.0,
+      "latency_ms": 164.57
+    }
+  ],
+  "dolil_qualitative_eval": [
+    {
+      "line_crop": "line_001.png",
+      "crop_path": "/Users/alfi/Downloads/BhumiLens_AI_P1_Prototype/outputs/evidence/DOLIL_AUTHENTIC_1/crops/line_001.png",
+      "recognized_text": "গণখ্রজাতন্গ্রী নাংলাদেন সরকার গ58)0 25.83 [444\"7#1\"1[{''[!{\"4[{ ম:2ণ70 ?}#3R### য়তাললি\" ঢাকা ৮0৫৬89",
+      "confidence": 0.093,
+      "latency_ms": 3041.72
+    },
+    {
+      "line_crop": "line_002.png",
+      "crop_path": "/Users/alfi/Downloads/BhumiLens_AI_P1_Prototype/outputs/evidence/DOLIL_AUTHENTIC_1/crops/line_002.png",
+      "recognized_text": "44:4 13144 [7 4+ 11{",
+      "confidence": 0.165,
+      "latency_ms": 469.92
+    },
+    {
+      "line_crop": "line_003.png",
+      "crop_path": "/Users/alfi/Downloads/BhumiLens_AI_P1_Prototype/outputs/evidence/DOLIL_AUTHENTIC_1/crops/line_003.png",
+      "recognized_text": "",
+      "confidence": 0.0,
+      "latency_ms": 23.19
+    },
+    {
+      "line_crop": "line_004.png",
+      "crop_path": "/Users/alfi/Downloads/BhumiLens_AI_P1_Prototype/outputs/evidence/DOLIL_AUTHENTIC_1/crops/line_004.png",
+      "recognized_text": "",
+      "confidence": 0.0,
+      "latency_ms": 22.22
+    },
+    {
+      "line_crop": "line_005.png",
+      "crop_path": "/Users/alfi/Downloads/BhumiLens_AI_P1_Prototype/outputs/evidence/DOLIL_AUTHENTIC_1/crops/line_005.png",
+      "recognized_text": "",
+      "confidence": 0.0,
+      "latency_ms": 24.88
+    },
+    {
+      "line_crop": "line_006.png",
+      "crop_path": "/Users/alfi/Downloads/BhumiLens_AI_P1_Prototype/outputs/evidence/DOLIL_AUTHENTIC_1/crops/line_006.png",
+      "recognized_text": "",
+      "confidence": 0.0,
+      "latency_ms": 44.17
+    },
+    {
+      "line_crop": "line_007.png",
+      "crop_path": "/Users/alfi/Downloads/BhumiLens_AI_P1_Prototype/outputs/evidence/DOLIL_AUTHENTIC_1/crops/line_007.png",
+      "recognized_text": "",
+      "confidence": 0.0,
+      "latency_ms": 17.82
+    },
+    {
+      "line_crop": "line_008.png",
+      "crop_path": "/Users/alfi/Downloads/BhumiLens_AI_P1_Prototype/outputs/evidence/DOLIL_AUTHENTIC_1/crops/line_008.png",
+      "recognized_text": "",
+      "confidence": 0.0,
+      "latency_ms": 67.25
+    }
+  ]
+}

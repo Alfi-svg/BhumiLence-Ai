@@ -23,6 +23,12 @@ from backend.schemas.document_schema import (
     DocumentAnalysisResult,
     SCHEMA_VERSION as DOCUMENT_SCHEMA_VERSION
 )
+from backend.schemas.htr_schema import (
+    HTREngineType,
+    LineRecognitionResult,
+    DocumentHTRResult,
+    SCHEMA_VERSION as HTR_SCHEMA_VERSION
+)
 
 __all__ = [
     "DeedExtractionSchema",
@@ -42,5 +48,9 @@ __all__ = [
     "TextLineCrop",
     "LayoutAnalysis",
     "DocumentAnalysisResult",
-    "DOCUMENT_SCHEMA_VERSION"
+    "DOCUMENT_SCHEMA_VERSION",
+    "HTREngineType",
+    "LineRecognitionResult",
+    "DocumentHTRResult",
+    "HTR_SCHEMA_VERSION"
 ]

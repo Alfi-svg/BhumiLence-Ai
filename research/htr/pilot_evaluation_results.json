@@ -1,0 +1,8 @@
+{
+  "model": "BhumiLens-HTR-v1-pilot",
+  "test_sample_count": 50,
+  "test_cer": 0.9878,
+  "test_wer": 1.0,
+  "average_latency_ms": 24.67,
+  "samples_evaluated": 50
+}
