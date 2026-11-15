@@ -1,0 +1,84 @@
+{
+  "model": "Qwen/Qwen3-0.6B",
+  "device": "mps",
+  "dtype": "float16",
+  "samples_evaluated": 10,
+  "json_validity_rate_pct": 0.0,
+  "exact_field_accuracy_pct": 0.0,
+  "null_precision_pct": 0.0,
+  "total_hallucinations": 0,
+  "average_latency_seconds": 8.16,
+  "free_disk_space_after_gib": 35.21,
+  "sample_records": [
+    {
+      "doc_id": "SEED_DOLIL_021",
+      "latency_seconds": 9.81,
+      "is_valid_json": false,
+      "raw_response": "<think>\nOkay, let's start by looking at the user's input. They provided a text from a deed: \"দলিল নং 3740/1996 SAF_KABALA মৌজা বারেন্ডা জমি 55.0 শতাংশ\". The task is to extract structured information i",
+      "parsed_json": null
+    },
+    {
+      "doc_id": "SEED_DOLIL_022",
+      "latency_seconds": 8.27,
+      "is_valid_json": false,
+      "raw_response": "<think>\nOkay, let's start by looking at the user's input. They provided a text from a deed: \"দলিল নং 3877/1999 HEBA_BIL_EWAZ মৌজা মৌচাক জমি 57.5 শতাংশ\". The task is to extract structured information i",
+      "parsed_json": null
+    },
+    {
+      "doc_id": "SEED_DOLIL_023",
+      "latency_seconds": 8.0,
+      "is_valid_json": false,
+      "raw_response": "<think>\nOkay, let's start by looking at the user's input. They provided a text in Bangla related to a land deed. The text is: \"দলিল নং 4014/2002 BONTONAMA মৌজা বিরুলিয়া জমি 60.0 শতাংশ\". \n\nFirst, I ne",
+      "parsed_json": null
+    },
+    {
+      "doc_id": "SEED_DOLIL_024",
+      "latency_seconds": 7.91,
+      "is_valid_json": false,
+      "raw_response": "<think>\nOkay, let's start by looking at the user's input. They provided a text from a deed: \"দলিল নং 4151/2005 BAYNAPATRA মৌজা কাওরাইদ জমি 62.5 শতাংশ\". The task is to extract structured information in",
+      "parsed_json": null
+    },
+    {
+      "doc_id": "SEED_DOLIL_025",
+      "latency_seconds": 7.91,
+      "is_valid_json": false,
+      "raw_response": "<think>\nOkay, let's start by looking at the user's input. They provided a text from a deed: \"দলিল নং 4288/2008 SAF_KABALA মৌজা পাইস্কা জমি 65.0 শতাংশ\". The task is to extract structured information in",
+      "parsed_json": null
+    },
+    {
+      "doc_id": "SEED_DOLIL_026",
+      "latency_seconds": 7.87,
+      "is_valid_json": false,
+      "raw_response": "<think>\nOkay, let's start by looking at the user's input. They provided a text from a deed: \"দলিল নং 4425/2011 SAF_KABALA মৌজা জয়দেবপুর জমি 67.5 শতাংশ\". The task is to extract structured information ",
+      "parsed_json": null
+    },
+    {
+      "doc_id": "SEED_DOLIL_027",
+      "latency_seconds": 8.03,
+      "is_valid_json": false,
+      "raw_response": "<think>\nOkay, let's start by looking at the user's input. They provided a text from a deed: \"দলিল নং 4562/2014 HEBA_BIL_EWAZ মৌজা টঙ্গী জমি 70.0 শতাংশ\". The task is to extract structured information i",
+      "parsed_json": null
+    },
+    {
+      "doc_id": "SEED_DOLIL_028",
+      "latency_seconds": 8.01,
+      "is_valid_json": false,
+      "raw_response": "<think>\nOkay, let's start by looking at the user's input. They provided a text from a deed: \"দলিল নং 4699/2017 BONTONAMA মৌজা কালীগঞ্জ জমি 72.5 শতাংশ\". The task is to extract structured information in",
+      "parsed_json": null
+    },
+    {
+      "doc_id": "SEED_DOLIL_029",
+      "latency_seconds": 7.91,
+      "is_valid_json": false,
+      "raw_response": "<think>\nOkay, let's start by looking at the user's input. They provided a text from a deed: \"দলিল নং 4836/2020 BAYNAPATRA মৌজা কাপাসিয়া জমি 75.0 শতাংশ\". The task is to extract structured information ",
+      "parsed_json": null
+    },
+    {
+      "doc_id": "SEED_DOLIL_030",
+      "latency_seconds": 7.88,
+      "is_valid_json": false,
+      "raw_response": "<think>\nOkay, let's start by looking at the user's input. They provided a text from a deed: \"দলিল নং 4973/2023 SAF_KABALA মৌজা শ্রীপুর জমি 77.5 শতাংশ\". The task is to extract structured information in",
+      "parsed_json": null
+    }
+  ]
+}

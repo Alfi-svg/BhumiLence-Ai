@@ -1,0 +1,268 @@
+{
+  "model": "Qwen/Qwen3-0.6B + LoRA (r=8, alpha=16)",
+  "base_model": "Qwen/Qwen3-0.6B",
+  "adapter_dir": "/Users/alfi/Downloads/BhumiLens_AI_P1_Prototype/models/extractor/qwen3-0.6b-deed-lora",
+  "device": "cpu",
+  "training_epochs": 3,
+  "trainable_parameters": 1146880,
+  "trainable_parameters_pct": 0.19,
+  "training_time_seconds": 365.99,
+  "samples_evaluated": 10,
+  "json_validity_rate_pct": 100.0,
+  "exact_field_accuracy_pct": 90.0,
+  "null_precision_pct": 0.0,
+  "total_hallucinations": 41,
+  "average_latency_seconds": 13.26,
+  "sample_records": [
+    {
+      "doc_id": "SEED_DOLIL_021",
+      "latency_seconds": 14.07,
+      "is_valid_json": true,
+      "hallucination_count": 4,
+      "raw_response": "{\n  \"deed_number\": \"3740\",\n  \"deed_type\": \"SAF_KABALA\",\n  \"registration_date\": \"28/05/1996\",\n  \"deed_value_bdt\": 150000.0,\n  \"mouza\": \"বারেন্ডা\",\n  \"upazila\": \"গাজীপুর সদর\",\n  \"district\": \"গাজীপুর\",\n  \"dag_numbers\": [\n    \"324\",\n    \"325\"\n  ],\n  \"kha",
+      "parsed_json": {
+        "deed_number": "3740",
+        "deed_type": "SAF_KABALA",
+        "registration_date": "28/05/1996",
+        "deed_value_bdt": 150000.0,
+        "mouza": "বারেন্ডা",
+        "upazila": "গাজীপুর সদর",
+        "district": "গাজীপুর",
+        "dag_numbers": [
+          "324",
+          "325"
+        ],
+        "khatian_numbers": [
+          "123"
+        ],
+        "land_area": 55.0,
+        "land_unit": "SHOTOK"
+      }
+    },
+    {
+      "doc_id": "SEED_DOLIL_022",
+      "latency_seconds": 12.91,
+      "is_valid_json": true,
+      "hallucination_count": 4,
+      "raw_response": "{\n  \"deed_number\": \"3877\",\n  \"deed_type\": \"HEBA_BIL_EWAZ\",\n  \"registration_date\": \"28/05/1999\",\n  \"deed_value_bdt\": 120000.0,\n  \"mouza\": \"মৌচাক\",\n  \"upazila\": \"গাজীপুর সদর\",\n  \"district\": \"গাজীপুর\",\n  \"dag_numbers\": [\n    \"324\",\n    \"325\"\n  ],\n  \"kha",
+      "parsed_json": {
+        "deed_number": "3877",
+        "deed_type": "HEBA_BIL_EWAZ",
+        "registration_date": "28/05/1999",
+        "deed_value_bdt": 120000.0,
+        "mouza": "মৌচাক",
+        "upazila": "গাজীপুর সদর",
+        "district": "গাজীপুর",
+        "dag_numbers": [
+          "324",
+          "325"
+        ],
+        "khatian_numbers": [
+          "123"
+        ],
+        "land_area": 57.5,
+        "land_unit": "SHOTOK"
+      }
+    },
+    {
+      "doc_id": "SEED_DOLIL_023",
+      "latency_seconds": 13.0,
+      "is_valid_json": true,
+      "hallucination_count": 5,
+      "raw_response": "{\n  \"deed_number\": \"4014\",\n  \"deed_type\": \"BONTONAMA\",\n  \"registration_date\": \"28/05/2002\",\n  \"deed_value_bdt\": 150000.0,\n  \"mouza\": \"বিরুলিয়া\",\n  \"upazila\": \"গাজীপুর সদর\",\n  \"district\": \"গাজীপুর\",\n  \"dag_numbers\": [\n    \"301\",\n    \"302\"\n  ],\n  \"kha",
+      "parsed_json": {
+        "deed_number": "4014",
+        "deed_type": "BONTONAMA",
+        "registration_date": "28/05/2002",
+        "deed_value_bdt": 150000.0,
+        "mouza": "বিরুলিয়া",
+        "upazila": "গাজীপুর সদর",
+        "district": "গাজীপুর",
+        "dag_numbers": [
+          "301",
+          "302"
+        ],
+        "khatian_numbers": [
+          "123"
+        ],
+        "land_area": 60.0,
+        "land_unit": "SHOTOK"
+      }
+    },
+    {
+      "doc_id": "SEED_DOLIL_024",
+      "latency_seconds": 12.9,
+      "is_valid_json": true,
+      "hallucination_count": 4,
+      "raw_response": "{\n  \"deed_number\": \"4151\",\n  \"deed_type\": \"BAYNAPATRA\",\n  \"registration_date\": \"28/05/2005\",\n  \"deed_value_bdt\": 1250000.0,\n  \"mouza\": \"কাওরাইদ\",\n  \"upazila\": \"গাজীপুর সদর\",\n  \"district\": \"গাজীপুর\",\n  \"dag_numbers\": [\n    \"301\",\n    \"302\"\n  ],\n  \"kha",
+      "parsed_json": {
+        "deed_number": "4151",
+        "deed_type": "BAYNAPATRA",
+        "registration_date": "28/05/2005",
+        "deed_value_bdt": 1250000.0,
+        "mouza": "কাওরাইদ",
+        "upazila": "গাজীপুর সদর",
+        "district": "গাজীপুর",
+        "dag_numbers": [
+          "301",
+          "302"
+        ],
+        "khatian_numbers": [
+          "123"
+        ],
+        "land_area": 62.5,
+        "land_unit": "SHOTOK"
+      }
+    },
+    {
+      "doc_id": "SEED_DOLIL_025",
+      "latency_seconds": 12.87,
+      "is_valid_json": true,
+      "hallucination_count": 4,
+      "raw_response": "{\n  \"deed_number\": \"4288\",\n  \"deed_type\": \"SAF_KABALA\",\n  \"registration_date\": \"28/05/2008\",\n  \"deed_value_bdt\": 1250000.0,\n  \"mouza\": \"পাইস্কা\",\n  \"upazila\": \"গাজীপুর সদর\",\n  \"district\": \"গাজীপুর\",\n  \"dag_numbers\": [\n    \"301\",\n    \"302\"\n  ],\n  \"kha",
+      "parsed_json": {
+        "deed_number": "4288",
+        "deed_type": "SAF_KABALA",
+        "registration_date": "28/05/2008",
+        "deed_value_bdt": 1250000.0,
+        "mouza": "পাইস্কা",
+        "upazila": "গাজীপুর সদর",
+        "district": "গাজীপুর",
+        "dag_numbers": [
+          "301",
+          "302"
+        ],
+        "khatian_numbers": [
+          "123"
+        ],
+        "land_area": 65.0,
+        "land_unit": "SHOTOK"
+      }
+    },
+    {
+      "doc_id": "SEED_DOLIL_026",
+      "latency_seconds": 13.56,
+      "is_valid_json": true,
+      "hallucination_count": 5,
+      "raw_response": "{\n  \"deed_number\": \"4425\",\n  \"deed_type\": \"SAF_KABALA\",\n  \"registration_date\": \"28/05/2011\",\n  \"deed_value_bdt\": 1200000.0,\n  \"mouza\": \"জয়দেবপুর\",\n  \"upazila\": \"গাজীপুর সদর\",\n  \"district\": \"গাজীপুর\",\n  \"dag_numbers\": [\n    \"301\",\n    \"302\"\n  ],\n  \"k",
+      "parsed_json": {
+        "deed_number": "4425",
+        "deed_type": "SAF_KABALA",
+        "registration_date": "28/05/2011",
+        "deed_value_bdt": 1200000.0,
+        "mouza": "জয়দেবপুর",
+        "upazila": "গাজীপুর সদর",
+        "district": "গাজীপুর",
+        "dag_numbers": [
+          "301",
+          "302"
+        ],
+        "khatian_numbers": [
+          "123"
+        ],
+        "land_area": 67.5,
+        "land_unit": "SHOTOK"
+      }
+    },
+    {
+      "doc_id": "SEED_DOLIL_027",
+      "latency_seconds": 12.91,
+      "is_valid_json": true,
+      "hallucination_count": 4,
+      "raw_response": "{\n  \"deed_number\": \"4562\",\n  \"deed_type\": \"HEBA_BIL_EWAZ\",\n  \"registration_date\": \"28/05/2014\",\n  \"deed_value_bdt\": 120000.0,\n  \"mouza\": \"টঙ্গী\",\n  \"upazila\": \"গাজীপুর সদর\",\n  \"district\": \"গাজীপুর\",\n  \"dag_numbers\": [\n    \"301\",\n    \"302\"\n  ],\n  \"kha",
+      "parsed_json": {
+        "deed_number": "4562",
+        "deed_type": "HEBA_BIL_EWAZ",
+        "registration_date": "28/05/2014",
+        "deed_value_bdt": 120000.0,
+        "mouza": "টঙ্গী",
+        "upazila": "গাজীপুর সদর",
+        "district": "গাজীপুর",
+        "dag_numbers": [
+          "301",
+          "302"
+        ],
+        "khatian_numbers": [
+          "123"
+        ],
+        "land_area": 70.0,
+        "land_unit": "SHOTOK"
+      }
+    },
+    {
+      "doc_id": "SEED_DOLIL_028",
+      "latency_seconds": 13.44,
+      "is_valid_json": true,
+      "hallucination_count": 3,
+      "raw_response": "{\n  \"deed_number\": \"4699\",\n  \"deed_type\": \"BONTONAMA\",\n  \"registration_date\": \"28/05/2017\",\n  \"deed_value_bdt\": 1250000.0,\n  \"mouza\": \"কালীগঞ্জ\",\n  \"upazila\": \"কালীগঞ্জ\",\n  \"district\": \"গাজীপুর\",\n  \"dag_numbers\": [\n    \"301\",\n    \"302\"\n  ],\n  \"khatia",
+      "parsed_json": {
+        "deed_number": "4699",
+        "deed_type": "BONTONAMA",
+        "registration_date": "28/05/2017",
+        "deed_value_bdt": 1250000.0,
+        "mouza": "কালীগঞ্জ",
+        "upazila": "কালীগঞ্জ",
+        "district": "গাজীপুর",
+        "dag_numbers": [
+          "301",
+          "302"
+        ],
+        "khatian_numbers": [
+          "123"
+        ],
+        "land_area": 72.5,
+        "land_unit": "SHOTOK"
+      }
+    },
+    {
+      "doc_id": "SEED_DOLIL_029",
+      "latency_seconds": 13.76,
+      "is_valid_json": true,
+      "hallucination_count": 5,
+      "raw_response": "{\n  \"deed_number\": \"4836\",\n  \"deed_type\": \"BAYNAPATRA\",\n  \"registration_date\": \"28/05/2020\",\n  \"deed_value_bdt\": 1250000.0,\n  \"mouza\": \"কাপাসিয়া\",\n  \"upazila\": \"কাপাসিয়া\",\n  \"district\": \"গাজীপুর\",\n  \"dag_numbers\": [\n    \"324\",\n    \"325\"\n  ],\n  \"kha",
+      "parsed_json": {
+        "deed_number": "4836",
+        "deed_type": "BAYNAPATRA",
+        "registration_date": "28/05/2020",
+        "deed_value_bdt": 1250000.0,
+        "mouza": "কাপাসিয়া",
+        "upazila": "কাপাসিয়া",
+        "district": "গাজীপুর",
+        "dag_numbers": [
+          "324",
+          "325"
+        ],
+        "khatian_numbers": [
+          "123"
+        ],
+        "land_area": 75.0,
+        "land_unit": "SHOTOK"
+      }
+    },
+    {
+      "doc_id": "SEED_DOLIL_030",
+      "latency_seconds": 13.2,
+      "is_valid_json": true,
+      "hallucination_count": 3,
+      "raw_response": "{\n  \"deed_number\": \"4973\",\n  \"deed_type\": \"SAF_KABALA\",\n  \"registration_date\": \"28/05/2023\",\n  \"deed_value_bdt\": 125000.0,\n  \"mouza\": \"শ্রীপুর\",\n  \"upazila\": \"শ্রীপুর\",\n  \"district\": \"গাজীপুর\",\n  \"dag_numbers\": [\n    \"324\",\n    \"325\"\n  ],\n  \"khatian_",
+      "parsed_json": {
+        "deed_number": "4973",
+        "deed_type": "SAF_KABALA",
+        "registration_date": "28/05/2023",
+        "deed_value_bdt": 125000.0,
+        "mouza": "শ্রীপুর",
+        "upazila": "শ্রীপুর",
+        "district": "গাজীপুর",
+        "dag_numbers": [
+          "324",
+          "325"
+        ],
+        "khatian_numbers": [
+          "123"
+        ],
+        "land_area": 77.5,
+        "land_unit": "SHOTOK"
+      }
+    }
+  ]
+}

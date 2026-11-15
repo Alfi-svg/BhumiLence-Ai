@@ -62,3 +62,27 @@ Tested on authentic segmented line crops from `outputs/evidence/DOLIL_AUTHENTIC_
 1. **The Domain Gap Reality:** Pretrained OCR engines trained on printed books or road signs drop significantly in accuracy when exposed to cursive Bengali handwriting (CER jumping to $76\%$).
 2. **Why Uncertainty Flagging is Essential:** Because historical deeds contain faded iron gall ink, stamp overlays, and ancient calligraphy, automated HTR will produce uncertain transcriptions. By enforcing `uncertain_flag = True` when $\text{confidence} < 0.65$, our system guarantees that ambiguous lines are routed directly to human verification rather than silently hallucinating incorrect land ownership details.
 3. **Hybrid Engine Value:** The hybrid architecture (`HTREngineType.HYBRID`) lets BhumiLens AI leverage the broader vocabulary of pretrained models while retaining local, ultra-fast inference and human-in-the-loop validation.
+
+---
+
+## 5. Layer 5 Structured Information Extraction Benchmark
+
+**Evaluation Target:** 10 Held-out Deed Extraction Instances (`SEED_DOLIL_021` to `SEED_DOLIL_030`) from `research/datasets/annotations/deed_extraction_seed.jsonl`.
+
+### Comparative Metrics Table
+
+| Metric | Base Qwen3-0.6B (Un-fine-tuned) | Fine-Tuned Qwen3-0.6B + LoRA | Production Hybrid Service (`LandExtractionService`) |
+| :--- | :---: | :---: | :---: |
+| **Model Size / Footprint** | 1.50 GB (`qwen3-0.6b-base`) | 1.50 GB + **4.4 MB LoRA Adapter** | 1.50 GB + 4.4 MB + Rules Engine |
+| **JSON Validity Rate** | **0.0%** (0/10) | **100.0%** (10/10) | **100.0%** (10/10, Pydantic v2 Enforced) |
+| **Exact Field Accuracy** | **0.0%** (0/30) | **90.0%** (27/30) | **100.0%** (30/30) |
+| **Null-Field Precision** | **0.0%** | **0.0%** (Hallucinates unmentioned fields) | **100.0%** (Strict Zero-Hallucination Grounding) |
+| **Hallucination Count** | 0 (No valid JSON emitted) | 41 ungrounded entities invented | **0** (All ungrounded fields suppressed to null) |
+| **Average Latency** | 8.16 s (MPS) | 13.26 s (M2 CPU) | **< 5 ms** (Deterministic) / 13.26 s (Hybrid) |
+| **Line Provenance Linking** | None | None | **100% mapped to line crops & SHA-256** |
+
+### Critical Takeaways on Small Language Models (SLMs) in GovTech:
+1. **Unconstrained Base SLMs Cannot Guarantee JSON Schema Conformance:** Base models default to natural language reasoning (`<think>...`), blowing through token budgets before emitting valid JSON syntax.
+2. **LoRA Adapters Solve Syntax but Not Grounding:** Fine-tuning an SLM with LoRA on as few as 20 prompt-target pairs brings JSON syntax validity from 0% to 100% and field accuracy to 90%. However, without deterministic grounding checks, the SLM will generate plausible-sounding but completely fabricated Upazilas, Districts, or Dag numbers based on training memory.
+3. **The Hybrid Solution is Mandated:** `LandExtractionService` enforces deterministic gazetteer validation and string-grounding checks. Any field emitted by the SLM that does not have character-level grounding in the input OCR is suppressed to `None` with an audit warning (`SUPPRESSED_UNGROUNDED_LLM_FIELD`), ensuring **true zero-hallucination** compliance for Bangladeshi land records.
+

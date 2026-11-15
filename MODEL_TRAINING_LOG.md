@@ -58,6 +58,40 @@ Input Image: (B, 1, 32, 256) — Grayscale, Aspect-Preserved, Normalized [-1, 1]
 
 ---
 
+## 4. BhumiLens-Qwen3-0.6B-Deed-LoRA — Model Training Log
+
+**Training Date:** 2026-11-15  
+**Model Name:** `BhumiLens-Qwen3-0.6B-Deed-LoRA`  
+**Base Model:** `Qwen/Qwen3-0.6B` (Causal LM, 597M base parameters)  
+**Tuning Method:** Parameter-Efficient Fine-Tuning (PEFT) via Low-Rank Adaptation (LoRA)  
+**Compute Platform:** Apple MacBook Air M2 (16GB Unified Memory), Metal Performance Shaders (`torch.device("mps")`)  
+**Frameworks:** PyTorch 2.15.0, HuggingFace Transformers, PEFT 0.21.3  
+
+### Architecture & LoRA Hyperparameters
+- **Base Parameters:** 597,196,800
+- **Trainable Parameters:** 1,146,880 (**0.19%** of total model parameters)
+- **Adapter Footprint:** 4.4 MB (`adapter_model.safetensors`)
+- **LoRA Rank ($r$):** 8
+- **LoRA Scaling Factor ($\alpha$):** 16
+- **Target Modules:** Attention projection layers (`q_proj`, `v_proj`)
+- **LoRA Dropout:** 0.05
+- **Optimizer:** AdamW ($\text{lr} = 2 \times 10^{-4}$, weight decay $0.01$)
+- **Batch Size:** 1 (Effective Batch Size = 2 via Gradient Accumulation Steps = 2)
+- **Gradient Clipping:** Max norm $1.0$
+
+### Training Trajectory
+
+| Epoch | Training Cross-Entropy Loss | Epoch Time (s) | M2 RAM Stability |
+| :---: | :---: | :---: | :---: |
+| **1** | 0.5979 | 55.4 s | Under 10 GB (Completely Stable) |
+| **2** | 0.2672 | 55.1 s | Under 10 GB (Completely Stable) |
+| **3** | 0.1893 | 55.5 s | Under 10 GB (Completely Stable) |
+
+- **Total Training Duration:** **365.99 seconds** (~6.1 minutes) on Apple MPS (`mps:0`).
+- **Saved Adapter Artifacts:** `models/extractor/qwen3-0.6b-deed-lora/` (`adapter_model.safetensors`, `adapter_config.json`, `tokenizer.json`). Excluded from Git via `.gitignore`.
+- **Primary Finding:** LoRA tuning on 20 seed instances drops cross-entropy loss from 0.5979 to 0.1893, teaching the model to output strict structured JSON matching `DeedExtractionSchema` directly rather than emitting long-form `<think>` reasoning thoughts.
+
+
 ## 4. Key Observations & Findings
 
 1. **Loss Convergence:** The model converges steadily from an initial loss of 11.51 down to 3.46, proving that the CTC gradient flow and BiLSTM temporal dependencies are functioning as intended.

@@ -24,6 +24,7 @@ research/datasets/processed/
 research/htr/GraDeT-HTR/
 models/checkpoints/
 models/htr/pretrained_baseline/
+models/extractor/
 *.pt
 *.pth
 *.bin
