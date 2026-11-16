@@ -58,6 +58,16 @@ outputs_dir = WORKSPACE_ROOT / "outputs"
 outputs_dir.mkdir(parents=True, exist_ok=True)
 app.mount("/outputs", StaticFiles(directory=str(outputs_dir)), name="outputs")
 
+# Mount sample_data/ directory for test deeds & khatian samples
+sample_data_dir = WORKSPACE_ROOT / "sample_data"
+if sample_data_dir.exists():
+    app.mount("/sample_data", StaticFiles(directory=str(sample_data_dir)), name="sample_data")
+
+# Mount research/ directory for datasets, splits, and corpus access
+research_dir = WORKSPACE_ROOT / "research"
+if research_dir.exists():
+    app.mount("/research", StaticFiles(directory=str(research_dir)), name="research")
+
 # Mount frontend/ directory for UI assets
 frontend_dir = WORKSPACE_ROOT / "frontend"
 if frontend_dir.exists():

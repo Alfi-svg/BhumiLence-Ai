@@ -15,6 +15,7 @@ const state = {
 // DOM Elements
 const elements = {
   fileUpload: document.getElementById("file-upload"),
+  btnCleanSampleRun: document.getElementById("btn-clean-sample-run"),
   btnSampleRun: document.getElementById("btn-sample-run"),
   btnRunPipeline: document.getElementById("btn-run-pipeline"),
   activeDocBadge: document.getElementById("active-doc-badge"),
@@ -167,68 +168,95 @@ async function updateShareCalculations() {
 }
 elements.btnCalcShare.addEventListener("click", updateShareCalculations);
 
+// HTML Sanitizer
+function escapeHtml(str) {
+  if (str === null || str === undefined) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 // Render Document Pipeline Results
 function renderPipelineOutput(output) {
+  if (!output) return;
   state.pipelineResult = output;
-  state.activeDocId = output.doc_id;
-  state.extractedData = output.extracted_deed;
+  state.activeDocId = output.doc_id || "UNKNOWN_DOC";
+  state.extractedData = output.extracted_deed || {};
 
-  // Header and status
-  elements.activeDocBadge.innerText = `ডকুমেন্ট: ${output.doc_id}`;
-  updateStateBadge(output.pipeline_state);
+  try {
+    // Header and status
+    elements.activeDocBadge.innerText = `ডকুমেন্ট: ${state.activeDocId}`;
+    updateStateBadge(output.pipeline_state);
 
-  // Main Image
-  const imgPath = output.evidence_manifest?.image_path || state.activeImagePath;
-  if (imgPath) {
-    elements.mainDocImage.src = "/" + imgPath.replace(/^\/+/, "");
-    elements.mainDocImage.style.display = "block";
-    elements.imagePlaceholder.style.display = "none";
+    // Main Image
+    const imgPath = output.evidence_manifest?.image_path || state.activeImagePath;
+    if (imgPath) {
+      elements.mainDocImage.src = "/" + String(imgPath).replace(/^\/+/, "");
+      elements.mainDocImage.style.display = "block";
+      elements.imagePlaceholder.style.display = "none";
+    }
+    const sha = output.original_image_sha256 || "";
+    elements.imageSha256Display.innerText = sha ? `SHA-256: ${sha.slice(0, 16)}...` : "SHA-256: N/A";
+
+    // Evidence Crops
+    renderEvidenceCrops(output);
+
+    // OCR Text
+    const prov = output.extracted_deed?.provenance || {};
+    elements.rawOcrDisplay.innerText = prov.raw_ocr_text || "তথ্য পাওয়া যায়নি।";
+    elements.normOcrDisplay.innerText = prov.normalized_ocr_text || "তথ্য পাওয়া যায়নি।";
+
+    // Form Fields
+    populateMetadataForm(output.extracted_deed);
+
+    // BhumiGuard Risk Report
+    renderBhumiGuardReport(output.bhumiguard_report);
+
+    // Cryptographic Seal & Audit
+    elements.currentSha256Seal.innerText = output.record_sha256 || "N/A";
+    elements.tamperStatusDisplay.innerText = "";
+    if (output.doc_id) {
+      fetchAuditTrail(output.doc_id);
+    }
+  } catch (err) {
+    console.error("[BhumiLens] Error rendering pipeline output:", err);
+    showToast(`UI প্রদর্শনে ত্রুটি: ${err.message}`, "error");
   }
-  elements.imageSha256Display.innerText = `SHA-256: ${(output.original_image_sha256 || '').slice(0, 16)}...`;
-
-  // Evidence Crops
-  renderEvidenceCrops(output);
-
-  // OCR Text
-  elements.rawOcrDisplay.innerText = output.extracted_deed?.provenance?.raw_ocr_text || "তথ্য পাওয়া যায়নি।";
-  elements.normOcrDisplay.innerText = output.extracted_deed?.provenance?.normalized_ocr_text || "তথ্য পাওয়া যায়নি।";
-
-  // Form Fields
-  populateMetadataForm(output.extracted_deed);
-
-  // BhumiGuard Risk Report
-  renderBhumiGuardReport(output.bhumiguard_report);
-
-  // Cryptographic Seal & Audit
-  elements.currentSha256Seal.innerText = output.record_sha256 || "N/A";
-  elements.tamperStatusDisplay.innerText = "";
-  fetchAuditTrail(output.doc_id);
 }
 
 // Render Evidence Crops
 function renderEvidenceCrops(output) {
   elements.cropsContainer.innerHTML = "";
   const layout = output.layout_analysis || {};
-  const crops = output.evidence_manifest?.field_crops || {};
+  const manifest = output.evidence_manifest || {};
+  const crops = manifest.field_crops || manifest.evidence_crops || {};
 
-  // If evidence crops exist, list them
-  const cropKeys = Object.keys(crops);
-  if (cropKeys.length > 0) {
-    cropKeys.forEach((key, idx) => {
+  const cropEntries = Object.entries(crops);
+  if (cropEntries.length > 0) {
+    cropEntries.forEach(([key, val], idx) => {
       const card = document.createElement("div");
       card.className = "crop-card";
-      const cropUrl = "/" + String(crops[key]).replace(/^\/+/, "");
+      
+      const cropPath = (typeof val === "object" && val !== null) ? (val.crop_path || "") : String(val || "");
+      const cropUrl = cropPath ? "/" + cropPath.replace(/^\/+/, "") : "";
+      const safeKey = escapeHtml(key);
+
       card.innerHTML = `
-        <img src="${cropUrl}" alt="${key}" onerror="this.style.display='none'">
-        <div style="font-weight: 600; font-size: 0.72rem;">${key}</div>
+        <img src="${cropUrl}" alt="${safeKey}" onerror="this.parentElement.style.opacity='0.6'; this.style.display='none';">
+        <div style="font-weight: 600; font-size: 0.72rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${safeKey}">${safeKey}</div>
         <div class="crop-meta">
           <span>Crop #${idx + 1}</span>
-          <span style="color: #34d399;">যাচাইকৃত</span>
+          <span style="color: #34d399;">এভিডেন্স</span>
         </div>
       `;
-      card.addEventListener("click", () => {
-        elements.mainDocImage.src = cropUrl;
-      });
+      if (cropUrl) {
+        card.addEventListener("click", () => {
+          elements.mainDocImage.src = cropUrl;
+        });
+      }
       elements.cropsContainer.appendChild(card);
     });
   } else {
@@ -242,32 +270,64 @@ function renderEvidenceCrops(output) {
 
 // Populate Form
 function populateMetadataForm(deed) {
-  if (!deed) return;
-  elements.deedNumber.value = deed.deed_number || "";
-  elements.deedYear.value = deed.deed_year || "";
+  deed = deed || {};
+  elements.deedNumber.value = deed.deed_number ?? "";
+  elements.deedYear.value = deed.deed_year ?? "";
   elements.deedType.value = deed.deed_type || "SAF_KABALA";
-  elements.regOffice.value = deed.registration_office || "";
+  elements.regOffice.value = deed.registration_office ?? "";
   
   const loc = deed.location || {};
-  elements.mouza.value = loc.mouza || "";
-  elements.upazila.value = loc.upazila || "";
+  elements.mouza.value = loc.mouza ?? "";
+  elements.upazila.value = loc.upazila ?? "";
   
   const land = deed.land_details || {};
-  elements.dags.value = (land.dag_numbers || []).join(", ");
-  elements.khatians.value = (land.khatian_numbers || []).join(", ");
-  elements.landArea.value = land.land_area || "";
+  
+  // Safe array or string handling for dags and khatians
+  const dags = Array.isArray(land.dag_numbers)
+    ? land.dag_numbers.join(", ")
+    : (land.dag_numbers != null ? String(land.dag_numbers) : "");
+  elements.dags.value = dags;
+
+  const khatians = Array.isArray(land.khatian_numbers)
+    ? land.khatian_numbers.join(", ")
+    : (land.khatian_numbers != null ? String(land.khatian_numbers) : "");
+  elements.khatians.value = khatians;
+
+  elements.landArea.value = land.land_area ?? "";
   elements.landUnit.value = land.land_unit || "SHOTOK";
   
-  elements.consideration.value = deed.deed_value_bdt || "";
-  elements.stampDuty.value = deed.stamp_duty_bdt || "";
+  elements.consideration.value = deed.deed_value_bdt ?? "";
+  elements.stampDuty.value = deed.stamp_duty_bdt ?? "";
   
-  const sellers = deed.sellers || [];
-  elements.sellers.value = sellers.map(s => s.name || "").filter(Boolean).join("; ");
-  const buyers = deed.buyers || [];
-  elements.buyers.value = buyers.map(b => b.name || "").filter(Boolean).join("; ");
+  // Safe array or string handling for sellers and buyers
+  let sellersStr = "";
+  if (Array.isArray(deed.sellers)) {
+    sellersStr = deed.sellers.map(s => {
+      if (typeof s === "object" && s !== null) {
+        return s.name || s.nid || "";
+      }
+      return String(s || "");
+    }).filter(Boolean).join("; ");
+  } else if (deed.sellers != null) {
+    sellersStr = String(deed.sellers);
+  }
+  elements.sellers.value = sellersStr;
 
-  // Trigger sync to unit converter
-  if (land.land_area) {
+  let buyersStr = "";
+  if (Array.isArray(deed.buyers)) {
+    buyersStr = deed.buyers.map(b => {
+      if (typeof b === "object" && b !== null) {
+        return b.name || b.nid || "";
+      }
+      return String(b || "");
+    }).filter(Boolean).join("; ");
+  } else if (deed.buyers != null) {
+    buyersStr = String(deed.buyers);
+  }
+  elements.buyers.value = buyersStr;
+
+  // Trigger sync to unit converter if area provided
+  if (land.land_area != null && land.land_area !== "") {
     elements.calcAreaInput.value = land.land_area;
     elements.calcUnitSelect.value = land.land_unit || "SHOTOK";
     updateUnitConversions();
@@ -276,10 +336,18 @@ function populateMetadataForm(deed) {
 
 // Render BhumiGuard Report
 function renderBhumiGuardReport(report) {
-  if (!report) return;
+  if (!report) {
+    elements.riskBanner.className = "risk-banner risk-low";
+    elements.riskLevelText.innerText = "ঝুঁকি তথ্য পাওয়া যায়নি";
+    elements.riskScoreDisplay.innerText = "0.00";
+    elements.anomalyExplanationText.innerText = "কোনো অ্যানোমালি রিপোর্ট নেই।";
+    elements.violationsContainer.innerHTML = `<div style="font-size: 0.78rem; color: var(--text-muted); padding: 8px;">কোনো নিয়ম লঙ্ঘন নেই।</div>`;
+    elements.duplicatesContainer.innerHTML = `<div style="font-size: 0.78rem; color: var(--text-muted); padding: 8px;">কোনো সদৃশ কপি নেই।</div>`;
+    return;
+  }
 
   const level = report.risk_level || "RISK_LOW";
-  const score = report.risk_score || 0;
+  const score = typeof report.risk_score === "number" ? report.risk_score : (parseFloat(report.risk_score) || 0);
 
   // Banner color
   elements.riskBanner.className = "risk-banner";
@@ -296,21 +364,25 @@ function renderBhumiGuardReport(report) {
   elements.riskScoreDisplay.innerText = score.toFixed(4);
 
   // Explanation
-  elements.anomalyExplanationText.innerText = report.anomaly_explanation_bn || "কোনো সংখ্যাগত অসঙ্গতি পাওয়া যায়নি।";
+  elements.anomalyExplanationText.innerText = report.anomaly_explanation_bn || report.anomaly_explanation_en || "কোনো সংখ্যাগত অসঙ্গতি পাওয়া যায়নি।";
 
   // Violations
   elements.violationsContainer.innerHTML = "";
-  const violations = report.rule_violations || [];
+  const violations = Array.isArray(report.rule_violations) ? report.rule_violations : [];
   if (violations.length > 0) {
     violations.forEach(v => {
       const card = document.createElement("div");
       card.className = "violation-card";
+      const ruleType = escapeHtml(v.rule_type || "RULE");
+      const severity = escapeHtml(v.severity || "INFO");
+      const fieldName = escapeHtml(v.field_name || "N/A");
+      const desc = escapeHtml(v.description_bn || v.description_en || "");
       card.innerHTML = `
         <div class="v-header">
-          <span>⚠️ [${v.rule_type}] (${v.severity})</span>
-          <span>ফিল্ড: ${v.field_name}</span>
+          <span>⚠️ [${ruleType}] (${severity})</span>
+          <span>ফিল্ড: ${fieldName}</span>
         </div>
-        <div class="v-body">${v.description_bn || v.description_en}</div>
+        <div class="v-body">${desc}</div>
       `;
       elements.violationsContainer.appendChild(card);
     });
@@ -320,7 +392,7 @@ function renderBhumiGuardReport(report) {
 
   // Duplicates
   elements.duplicatesContainer.innerHTML = "";
-  const dups = report.duplicate_matches || [];
+  const dups = Array.isArray(report.duplicate_matches) ? report.duplicate_matches : [];
   if (dups.length > 0) {
     dups.forEach(d => {
       const div = document.createElement("div");
@@ -329,7 +401,10 @@ function renderBhumiGuardReport(report) {
       div.style.borderRadius = "4px";
       div.style.marginTop = "4px";
       div.style.fontSize = "0.78rem";
-      div.innerHTML = `<strong>${d.match_type}:</strong> ${d.detail} (সাদৃশ্য: ${d.similarity_pct}%)`;
+      const matchType = escapeHtml(d.match_type || "MATCH");
+      const detail = escapeHtml(d.detail || "");
+      const sim = typeof d.similarity_pct === "number" ? d.similarity_pct.toFixed(1) : escapeHtml(String(d.similarity_pct ?? "N/A"));
+      div.innerHTML = `<strong>${matchType}:</strong> ${detail} (সাদৃশ্য: ${sim}%)`;
       elements.duplicatesContainer.appendChild(div);
     });
   } else {
@@ -354,13 +429,14 @@ function updateStateBadge(pipelineState) {
 
 // Fetch Audit Trail
 async function fetchAuditTrail(docId) {
+  if (!docId) return;
   try {
-    const res = await fetch(`/api/v1/documents/${docId}`);
+    const res = await fetch(`/api/v1/documents/${encodeURIComponent(docId)}`);
     if (!res.ok) return;
     const doc = await res.json();
     
     elements.auditTimeline.innerHTML = "";
-    const trail = doc.audit_trail || [];
+    const trail = Array.isArray(doc.audit_trail) ? doc.audit_trail : [];
     if (trail.length === 0) {
       elements.auditTimeline.innerHTML = `<div style="font-size: 0.75rem; color: var(--text-muted);">এখনও কোনো অডিট ইভেন্ট নেই।</div>`;
       return;
@@ -369,10 +445,20 @@ async function fetchAuditTrail(docId) {
     trail.forEach(ev => {
       const item = document.createElement("div");
       item.className = "timeline-item";
+      const action = escapeHtml(ev.action || "");
+      const role = escapeHtml(ev.role || "");
+      const actorId = escapeHtml(ev.actor_id || "SYSTEM");
+      const hash = escapeHtml(ev.record_sha256 || "N/A");
+      let timeStr = "";
+      try {
+        timeStr = new Date(ev.timestamp_utc).toLocaleString('bn-BD');
+      } catch (e) {
+        timeStr = ev.timestamp_utc || "";
+      }
       item.innerHTML = `
-        <div><strong>${ev.action}</strong> (${ev.role}) — কর্মকর্তা: <em>${ev.actor_id}</em></div>
-        <div class="timeline-meta">${new Date(ev.timestamp_utc).toLocaleString('bn-BD')}</div>
-        <div class="timeline-hash">Seal: ${ev.record_sha256}</div>
+        <div><strong>${action}</strong> (${role}) — কর্মকর্তা: <em>${actorId}</em></div>
+        <div class="timeline-meta">${timeStr}</div>
+        <div class="timeline-hash">Seal: ${hash}</div>
       `;
       elements.auditTimeline.appendChild(item);
     });
@@ -381,7 +467,34 @@ async function fetchAuditTrail(docId) {
   }
 }
 
-// 1-Click Sample Dolil Test
+// 1-Click Clean Sample Deed (Pre-calibrated Demo)
+if (elements.btnCleanSampleRun) {
+  elements.btnCleanSampleRun.addEventListener("click", async () => {
+    if (state.isProcessing) return;
+    state.isProcessing = true;
+    elements.btnCleanSampleRun.disabled = true;
+    elements.pipelineStatusText.innerText = "ক্যালিব্রেটেড ডেমো দলিল লোড হচ্ছে...";
+    showToast("ক্যালিব্রেটেড নমুনা দলিল লোড করা হচ্ছে...", "info");
+
+    try {
+      const res = await fetch("/api/v1/process/demo-calibrated", {
+        method: "GET"
+      });
+      if (!res.ok) throw new Error("Calibrated demo fetch failed");
+      const result = await res.json();
+      renderPipelineOutput(result);
+      showToast("ক্যালিব্রেটেড নমুনা দলিলের তথ্য ও এভিডেন্স ক্রপস লোড করা হয়েছে!", "success");
+    } catch (err) {
+      showToast(`ডেমো লোডে ত্রুটি: ${err.message}`, "error");
+    } finally {
+      state.isProcessing = false;
+      elements.btnCleanSampleRun.disabled = false;
+      elements.pipelineStatusText.innerText = "প্রস্তুত";
+    }
+  });
+}
+
+// 1-Click Raw Sample Dolil Test (Dolil 100)
 elements.btnSampleRun.addEventListener("click", async () => {
   if (state.isProcessing) return;
   state.isProcessing = true;
@@ -504,7 +617,9 @@ elements.btnMakerSubmit.addEventListener("click", async () => {
       land_unit: elements.landUnit.value
     },
     deed_value_bdt: parseFloat(elements.consideration.value) || null,
-    stamp_duty_bdt: parseFloat(elements.stampDuty.value) || null
+    stamp_duty_bdt: parseFloat(elements.stampDuty.value) || null,
+    sellers: elements.sellers.value.split(";").map(s => ({ name: s.trim() })).filter(s => s.name),
+    buyers: elements.buyers.value.split(";").map(b => ({ name: b.trim() })).filter(b => b.name)
   };
 
   try {

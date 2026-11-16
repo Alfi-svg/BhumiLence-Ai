@@ -15,6 +15,9 @@ from pydantic import BaseModel, Field
 # Zero-width & control characters common in OCR noise
 ZERO_WIDTH_CHARS = re.compile(r"[\u200B\u200C\u200D\uFEFF\u00A0]")
 
+# Obvious OCR symbol noise common in dense historical handwriting recognition
+OCR_NOISE_SYMBOLS = re.compile(r"[\^\|\{\}\~\=\<\>\[\]\_\\`]")
+
 # Digit Translation Mappings
 BN_DIGITS = "০১২৩৪৫৬৭৮৯"
 EN_DIGITS = "0123456789"
@@ -103,14 +106,28 @@ class BanglaLandNormalizer:
         self.phrase_dict = DIRECT_PHRASE_REPLACEMENTS
 
     @staticmethod
+    def strip_ocr_noise_symbols(text: str) -> str:
+        """
+        Strips obvious OCR symbol noise characters (^, |, {, }, ~, =, <, >, [, ], _, \, `)
+        while preserving Bengali letters (\u0980-\u09FF), digits (০-৯, 0-9), and valid punctuation.
+        """
+        if not text:
+            return ""
+        cleaned = OCR_NOISE_SYMBOLS.sub(" ", text)
+        cleaned = re.sub(r"[ \t]+", " ", cleaned)
+        return cleaned.strip()
+
+    @staticmethod
     def clean_unicode(text: str) -> str:
-        """Applies Unicode NFC normalization and strips invisible zero-width noise."""
+        """Applies Unicode NFC normalization, strips invisible zero-width noise, and removes OCR symbol noise."""
         if not text:
             return ""
         # Unicode Normalization Form C
         norm = unicodedata.normalize("NFC", text)
         # Strip zero-width & non-breaking spaces
         norm = ZERO_WIDTH_CHARS.sub("", norm)
+        # Strip OCR symbol noise (^, |, {, }, ~, =, <, >, [, ], _, \, `)
+        norm = OCR_NOISE_SYMBOLS.sub(" ", norm)
         # Normalize multiple spaces
         norm = re.sub(r"[ \t]+", " ", norm)
         return norm.strip()

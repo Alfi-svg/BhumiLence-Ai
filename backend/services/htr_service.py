@@ -125,6 +125,34 @@ class HTRService:
         return self._custom_model, self._custom_vocab
 
     @staticmethod
+    def preprocess_line_crop_for_easyocr(crop_path: str, pad: int = 10) -> Optional[np.ndarray]:
+        """
+        Preprocesses a cropped line image for EasyOCR:
+        1. Reads image in grayscale.
+        2. Applies CLAHE (clipLimit=2.0, tileGridSize=(8,8)) to enhance low-contrast ink.
+        3. Adds white padding border (pad px) around the line to prevent edge cutoff.
+        """
+        img = cv2.imread(crop_path, cv2.IMREAD_GRAYSCALE)
+        if img is None:
+            return None
+        
+        # Apply CLAHE contrast enhancement
+        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+        enhanced = clahe.apply(img)
+        
+        # Add white padding border
+        padded = cv2.copyMakeBorder(
+            enhanced,
+            top=pad,
+            bottom=pad,
+            left=pad,
+            right=pad,
+            borderType=cv2.BORDER_CONSTANT,
+            value=255
+        )
+        return padded
+
+    @staticmethod
     def preprocess_image_for_crnn(img_path: str, img_h: int = 32, img_w: int = 256) -> np.ndarray:
         """Preprocesses a cropped line image for CRNN inference."""
         img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
@@ -172,7 +200,11 @@ class HTRService:
 
         if active_engine in [HTREngineType.PRETRAINED_BASELINE, HTREngineType.HYBRID]:
             reader = self._get_easyocr_reader()
-            results = reader.readtext(str(crop_p), detail=1)
+            prep_img = self.preprocess_line_crop_for_easyocr(str(crop_p))
+            if prep_img is not None:
+                results = reader.readtext(prep_img, detail=1)
+            else:
+                results = reader.readtext(str(crop_p), detail=1)
             tokens = [r[1] for r in results]
             confs = [float(r[2]) for r in results]
 

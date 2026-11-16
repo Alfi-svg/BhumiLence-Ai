@@ -118,13 +118,28 @@ class BhumiLensSupervisor:
         # Stage 6: Layer 7 Audit Persistence & Cryptographic SHA-256 Hashing
         # ---------------------------------------------------------------------
         t0 = time.perf_counter()
+
+        # Collect all visual evidence crops from Layer 3 & Layer 5
+        crops_dict: Dict[str, Any] = {}
+        for k, v in vision_result.evidence_crops.items():
+            if hasattr(v, "crop_path"):
+                crops_dict[k] = v.crop_path
+            elif isinstance(v, dict) and "crop_path" in v:
+                crops_dict[k] = v["crop_path"]
+            else:
+                crops_dict[k] = str(v)
+
+        if extraction_schema.provenance and extraction_schema.provenance.evidence_crops:
+            for fk, fv in extraction_schema.provenance.evidence_crops.items():
+                crops_dict[fk] = fv
+
         evidence_manifest = {
             "image_path": str(image_path),
             "image_sha256": vision_result.image_sha256,
             "dimensions": vision_result.quality.dimensions.model_dump(),
             "crops_count": len(vision_result.evidence_crops),
             "line_crops_count": len(vision_result.layout.line_crops),
-            "field_crops": extraction_schema.provenance.evidence_crops,
+            "field_crops": crops_dict,
             "bhumiguard_risk_level": bhumiguard_report.risk_level.value,
             "bhumiguard_risk_score": bhumiguard_report.risk_score
         }

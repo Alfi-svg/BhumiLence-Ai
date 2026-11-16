@@ -44,11 +44,11 @@ UPAZILA_LIST = [
 DISTRICT_LIST = ["গাজীপুর", "ঢাকা", "টাঙ্গাইল", "নারায়ণগঞ্জ", "নারায়ণগঞ্জ", "মানিকগঞ্জ", "মুন্সিগঞ্জ"]
 
 DEED_TYPE_PATTERNS = [
-    (re.compile(r"(সাফ\s*কবলা|SAF_KABALA|কবলা|বিক্রয়|খরিদা)", re.IGNORECASE), DeedType.SAF_KABALA),
-    (re.compile(r"(বায়না|বায়না|BAYNAPATRA)", re.IGNORECASE), DeedType.BAYNAPATRA),
-    (re.compile(r"(বণ্টন|বন্টন|আপোষ\s*বন্টন|BONTONAMA)", re.IGNORECASE), DeedType.BONTONAMA),
-    (re.compile(r"(হেবা\s*বিল\s*এওয়াজ|হেবা\s*বিল\s*এওয়াজ|HEBA_BIL_EWAZ)", re.IGNORECASE), DeedType.HEBA_BIL_EWAZ),
-    (re.compile(r"(দানপত্র|হেবা\s*ঘোষণা|হেবানামা|HEBA_DECLARATION|HEBA)", re.IGNORECASE), DeedType.HEBA_DECLARATION),
+    (re.compile(r"(সাফ\s*কবলা|SAF[_\s]*KABALA|কবলা|বিক্রয়|খরিদা)", re.IGNORECASE), DeedType.SAF_KABALA),
+    (re.compile(r"(বায়না|বায়না|BAYNA[_\s]*PATRA|BAYANAPATRA)", re.IGNORECASE), DeedType.BAYNAPATRA),
+    (re.compile(r"(বণ্টন|বন্টন|আপোষ\s*বন্টন|BONTON[_\s]*AMA)", re.IGNORECASE), DeedType.BONTONAMA),
+    (re.compile(r"(হেবা\s*বিল\s*এওয়াজ|হেবা\s*বিল\s*এওয়াজ|HEBA[_\s]*BIL[_\s]*EWAZ)", re.IGNORECASE), DeedType.HEBA_BIL_EWAZ),
+    (re.compile(r"(দানপত্র|হেবা\s*ঘোষণা|হেবানামা|HEBA[_\s]*DECLARATION|HEBA)", re.IGNORECASE), DeedType.HEBA_DECLARATION),
     (re.compile(r"(খতিয়ান|খতিয়ান|পর্চা|KHATIAN)", re.IGNORECASE), DeedType.KHATIAN_RECORD),
     (re.compile(r"(বন্ধক|বন্ধকী|MORTGAGE)", re.IGNORECASE), DeedType.MORTGAGE),
 ]
