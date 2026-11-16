@@ -14,6 +14,7 @@ from backend.services.anomaly_service import (
     compute_hamming_distance,
     IsolationForestScorer
 )
+from backend.services.security_service import SecurityGuardService, default_security_service
 
 __all__ = [
     "DocumentVisionService",
@@ -27,5 +28,7 @@ __all__ = [
     "BhumiGuardService",
     "compute_dhash",
     "compute_hamming_distance",
-    "IsolationForestScorer"
+    "IsolationForestScorer",
+    "SecurityGuardService",
+    "default_security_service"
 ]

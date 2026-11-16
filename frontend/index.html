@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BhumiLens AI + BhumiGuard — ভূমি দলিল বুদ্ধিমত্তা ও মেকার-চেকার ওয়ার্কবেঞ্চ</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <!-- Top Application Header -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-icon">ভৃ</div>
+      <div class="brand-title">
+        <h1>BhumiLens AI + BhumiGuard <span class="badge-version">v1.0.0</span></h1>
+        <div class="brand-subtitle">বাংলাদেশ ভূমি দলিল বুদ্ধিমত্তা, গাণিতিক হিস্যা ও মেকার-চেকার অডিট সিস্টেম</div>
+      </div>
+    </div>
+    <div class="header-badges">
+      <span class="badge badge-offline"><span class="badge-dot"></span> 100% অফলাইন প্রস্তুত</span>
+      <span class="badge badge-mps"><span class="badge-dot"></span> Apple M2 (MPS) সক্রিয়</span>
+      <span class="badge badge-gov"><span class="badge-dot"></span> ফোর-আইজ নিরাপত্তা নীতি</span>
+      <button class="btn btn-secondary" id="btn-toggle-rag" title="সহকারী খুলুন">
+        💬 ভূমি জ্ঞান সহকারী (RAG)
+      </button>
+    </div>
+  </header>
+
+  <!-- Top Action & Pipeline Control Bar -->
+  <section class="control-bar">
+    <div class="control-left">
+      <div class="upload-input-wrap">
+        <label for="file-upload" class="btn btn-secondary">
+          📁 দলিল নির্বাচন করুন (PNG/JPG/PDF)
+        </label>
+        <input type="file" id="file-upload" accept="image/png, image/jpeg, application/pdf">
+      </div>
+      <button class="btn btn-primary" id="btn-sample-run">
+        ⚡ নমুনা দলিল দিয়ে সরাসরি পরীক্ষা (Dolil 100)
+      </button>
+      <button class="btn btn-accent" id="btn-run-pipeline" disabled>
+        ▶ সম্পূর্ণ পাইপলাইন চালান (Agents 1–6)
+      </button>
+    </div>
+    <div class="control-right">
+      <span id="active-doc-badge" class="state-badge state-pending-maker">ডকুমেন্ট আইডি: কোনো দলিল লোড হয়নি</span>
+      <span id="pipeline-status-text" style="font-size: 0.8rem; color: var(--text-muted);">প্রস্তুত</span>
+    </div>
+  </section>
+
+  <!-- Main Split Workspace Layout -->
+  <main class="main-container">
+
+    <!-- Left Panel: Visual Evidence & Line Crops -->
+    <section class="panel left-panel">
+      <div class="panel-header">
+        <h2>📷 মূল স্ক্যান ও এভিডেন্স ক্রপস (Evidence & Visual Lineage)</h2>
+        <span id="image-sha256-display" class="badge" style="font-family: monospace; font-size: 0.68rem;">SHA-256: N/A</span>
+      </div>
+      <div class="panel-body">
+        <!-- Main Document Image Preview -->
+        <div class="image-viewer-card" id="main-image-container">
+          <div class="image-placeholder" id="image-placeholder">
+            দলিল নির্বাচন করুন বা "নমুনা দলিল দিয়ে পরীক্ষা" বাটনে ক্লিক করুন।
+          </div>
+          <img id="main-doc-image" src="" alt="Document Scan" style="display: none;">
+        </div>
+
+        <!-- Evidence Crops Section -->
+        <div class="crops-section">
+          <h3>সেগমেন্টেড লাইন ও সিল ক্রপস (Evidence Crops)</h3>
+          <div class="crops-scroll" id="crops-container">
+            <div style="font-size: 0.75rem; color: var(--text-muted); padding: 10px;">
+              পাইপলাইন সম্পন্ন হলে এখানে প্রতিটি হস্তাক্ষর লাইনের ক্রপ ও কনফিডেন্স প্রদর্শিত হবে।
+            </div>
+          </div>
+        </div>
+
+        <!-- Raw vs Normalized Bengali OCR -->
+        <div class="ocr-compare-box">
+          <div class="ocr-row">
+            <span class="ocr-label">র' অপটিক্যাল রিকগনিশন (Raw HTR Text):</span>
+            <div class="ocr-text" id="raw-ocr-display">অপেক্ষমান...</div>
+          </div>
+          <div class="ocr-row">
+            <span class="ocr-label">পোস্ট-SLM নরমালাইজড টেক্সট (Normalized Bangla Land Text):</span>
+            <div class="ocr-text normalized" id="norm-ocr-display">অপেক্ষমান...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Panel: Structured Deed Data, Math, BhumiGuard, and Maker-Checker Approval -->
+    <section class="panel right-panel">
+      <!-- Tabs Navigation -->
+      <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="tab-metadata">📝 দলিলের তথ্য (Metadata)</button>
+        <button class="tab-btn" data-tab="tab-math">📐 ল্যান্ড ম্যাথ ও ১৬-আনা</button>
+        <button class="tab-btn" data-tab="tab-bhumiguard">🛡️ ভূমিগার্ড ইন্টেলিজেন্স</button>
+        <button class="tab-btn" data-tab="tab-governance">⚖️ মেকার-চেকার অনুমোদন</button>
+      </nav>
+
+      <div class="panel-body">
+        
+        <!-- Tab 1: Extracted Deed Metadata Editor -->
+        <div class="tab-content active" id="tab-metadata">
+          <form id="deed-metadata-form" class="form-grid">
+            <div class="form-group">
+              <label for="field-deed-number">দলিল নম্বর (Deed Number)</label>
+              <input type="text" id="field-deed-number" class="form-control" placeholder="যেমন: ১০০">
+            </div>
+            <div class="form-group">
+              <label for="field-deed-year">দলিল সাল (Deed Year)</label>
+              <input type="number" id="field-deed-year" class="form-control" placeholder="যেমন: ২০০১">
+            </div>
+            <div class="form-group">
+              <label for="field-deed-type">দলিলের প্রকৃতি (Deed Type)</label>
+              <select id="field-deed-type" class="form-control">
+                <option value="SAF_KABALA">সাফ-কবলা (SAF_KABALA)</option>
+                <option value="HEBA_BIL_EWAZ">হেবা বিল এওয়াজ (HEBA_BIL_EWAZ)</option>
+                <option value="BONTONAMA">বণ্টননামা (BONTONAMA)</option>
+                <option value="BAYANAPATRA">বায়নাপত্র (BAYANAPATRA)</option>
+                <option value="DANPATRA">দানপত্র (DANPATRA)</option>
+                <option value="MOKTARNAME">আমমোক্তারনামা (MOKTARNAME)</option>
+                <option value="UNKNOWN">অন্যান্য / অজ্ঞাত (UNKNOWN)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="field-reg-office">সাব-রেজিস্ট্রি অফিস (Sub-Registry Office)</label>
+              <input type="text" id="field-reg-office" class="form-control" placeholder="যেমন: গাজীপুর সদর">
+            </div>
+            <div class="form-group">
+              <label for="field-mouza">মৌজা (Mouza)</label>
+              <input type="text" id="field-mouza" class="form-control" placeholder="যেমন: বারেন্ডা">
+            </div>
+            <div class="form-group">
+              <label for="field-upazila">উপজেলা / থানা (Upazila)</label>
+              <input type="text" id="field-upazila" class="form-control" placeholder="যেমন: গাজীপুর সদর">
+            </div>
+            <div class="form-group">
+              <label for="field-dags">দাগ নম্বরসমূহ (Dag Numbers, কমা দিয়ে পৃথক)</label>
+              <input type="text" id="field-dags" class="form-control" placeholder="যেমন: ১০৪, ১০৫">
+            </div>
+            <div class="form-group">
+              <label for="field-khatians">খতিয়ান নম্বরসমূহ (Khatian Numbers, কমা দিয়ে পৃথক)</label>
+              <input type="text" id="field-khatians" class="form-control" placeholder="যেমন: ৫০২, ৫০৩">
+            </div>
+            <div class="form-group">
+              <label for="field-land-area">জমির পরিমাণ (Land Area)</label>
+              <input type="number" step="0.001" id="field-land-area" class="form-control" placeholder="যেমন: ১২.৫">
+            </div>
+            <div class="form-group">
+              <label for="field-land-unit">পরিমাপের একক (Unit)</label>
+              <select id="field-land-unit" class="form-control">
+                <option value="SHOTOK">শতক / শতাংশ (SHOTOK)</option>
+                <option value="KATHA">কাঠা (KATHA)</option>
+                <option value="BIGHA">বিঘা (BIGHA)</option>
+                <option value="ACRE">একর (ACRE)</option>
+                <option value="AJUTANGSHO">অযুতাংশ (AJUTANGSHO)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="field-consideration">দলিল মূল্য / পণমূল্য (BDT)</label>
+              <input type="number" step="0.01" id="field-consideration" class="form-control" placeholder="যেমন: ৫০০০০০.০০">
+            </div>
+            <div class="form-group">
+              <label for="field-stamp-duty">স্ট্যাম্প শুল্ক (Stamp Duty BDT)</label>
+              <input type="number" step="0.01" id="field-stamp-duty" class="form-control" placeholder="যেমন: ১৫০০০.০০">
+            </div>
+            <div class="form-group full-width">
+              <label for="field-sellers">দাতা / বিক্রেতা পক্ষ (Sellers)</label>
+              <input type="text" id="field-sellers" class="form-control" placeholder="বিক্রেতার নাম ও ঠিকানা">
+            </div>
+            <div class="form-group full-width">
+              <label for="field-buyers">গ্রহীতা / ক্রেতা পক্ষ (Buyers)</label>
+              <input type="text" id="field-buyers" class="form-control" placeholder="ক্রেতার নাম ও ঠিকানা">
+            </div>
+          </form>
+        </div>
+
+        <!-- Tab 2: Land Math & 16-Ana Inspector -->
+        <div class="tab-content" id="tab-math">
+          <div style="background: var(--bg-card); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <h3 style="font-size: 0.9rem; margin-bottom: 10px;">🔄 নিখুঁত জমি একক রূপান্তর (Deterministic Unit Converter)</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>জমির পরিমাণ:</label>
+                <input type="number" id="calc-area-input" class="form-control" value="1.0" step="0.01">
+              </div>
+              <div class="form-group">
+                <label>উৎস একক:</label>
+                <select id="calc-unit-select" class="form-control">
+                  <option value="KATHA">কাঠা (Katha)</option>
+                  <option value="SHOTOK">শতক (Shotok)</option>
+                  <option value="BIGHA">বিঘা (Bigha)</option>
+                  <option value="ACRE">একর (Acre)</option>
+                  <option value="AJUTANGSHO">অযুতাংশ (Ajutangsho)</option>
+                </select>
+              </div>
+            </div>
+            <div id="unit-convert-results" style="margin-top: 10px; font-size: 0.82rem; background: var(--bg-input); padding: 10px; border-radius: 6px;">
+              ফলাফল দেখার জন্য অপেক্ষা করুন...
+            </div>
+          </div>
+
+          <div style="background: var(--bg-card); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 10px;">
+            <h3 style="font-size: 0.9rem; margin-bottom: 10px;">📜 প্রাচীন ১৬-আনা হিস্যা হিসাব (16-Ana Archaic Share Calculator)</h3>
+            <div class="form-group">
+              <label>আনা-গন্ডা-কড়া-ক্রান্তি নোটেশন:</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="share-notation-input" class="form-control" value="4 আনা 10 গন্ডা 2 কড়া 0 ক্রান্তি">
+                <button class="btn btn-secondary" id="btn-calc-share">হিসাব করুন</button>
+              </div>
+            </div>
+            <div id="share-calc-results" style="margin-top: 10px; font-size: 0.82rem; background: var(--bg-input); padding: 10px; border-radius: 6px;">
+              ফলাফল দেখার জন্য অপেক্ষা করুন...
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: BhumiGuard Anomaly & Risk Report -->
+        <div class="tab-content" id="tab-bhumiguard">
+          <div id="risk-banner" class="risk-banner risk-low">
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">সার্বিক ঝুঁকি স্তর (Overall Risk Level)</div>
+              <div id="risk-level-text" style="font-size: 1.15rem; font-weight: 800;">ঝুঁকি মূল্যায়ন অপেক্ষমান</div>
+            </div>
+            <div class="risk-score-display" id="risk-score-display">0.00</div>
+          </div>
+
+          <div style="background: var(--bg-card); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.8rem;">
+            <strong>স্ট্যাটিস্টিক্যাল অ্যানোমালি সারাংশ:</strong>
+            <div id="anomaly-explanation-text" style="margin-top: 4px; color: var(--text-secondary);">
+              পাইপলাইন চালানোর পর আইসোলেশন ফরেস্টের অ্যানোমালি বিশ্লেষণ এখানে প্রদর্শিত হবে।
+            </div>
+          </div>
+
+          <!-- Cross-Record Conflicts List -->
+          <div>
+            <h4 style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">চিহ্নিত নিয়ম লঙ্ঘন ও সংঘাত (Conflict Violations)</h4>
+            <div id="violations-container">
+              <div style="font-size: 0.78rem; color: var(--text-muted); padding: 8px;">কোনো নিয়ম লঙ্ঘন পরিলক্ষিত হয়নি।</div>
+            </div>
+          </div>
+
+          <!-- Duplicate Matches List -->
+          <div>
+            <h4 style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">ডুপ্লিকেট ও ভিজ্যুয়াল মিল (Duplicate Matches)</h4>
+            <div id="duplicates-container">
+              <div style="font-size: 0.78rem; color: var(--text-muted); padding: 8px;">ডাটাবেজে কোনো সদৃশ কপি পাওয়া যায়নি।</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Maker-Checker Approval Governance -->
+        <div class="tab-content" id="tab-governance">
+          <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 12px;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: #34d399;">🔒 ক্রিপ্টোগ্রাফিক SHA-256 সিল ও অখণ্ডতা যাচাই</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+              <span id="current-sha256-seal" style="font-family: monospace; font-size: 0.72rem; word-break: break-all;">অপেক্ষমান...</span>
+              <button class="btn btn-secondary" id="btn-verify-hash" style="flex-shrink: 0; padding: 4px 10px; font-size: 0.75rem;">
+                ট্যাম্পার চেক করুন
+              </button>
+            </div>
+            <div id="tamper-status-display" style="font-size: 0.75rem; margin-top: 6px; font-weight: 600;"></div>
+          </div>
+
+          <!-- Maker Submission Box -->
+          <div style="background: var(--bg-card); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #fbbf24; margin-bottom: 8px;">
+              ১ম ধাপ: মেকার অপারেটরের যাচাই ও সংশোধন (Maker Review)
+            </div>
+            <div class="form-group">
+              <label for="maker-id-input">অপারেটর আইডি (Maker ID):</label>
+              <input type="text" id="maker-id-input" class="form-control" value="OP_MAKER_SALMAN">
+            </div>
+            <div class="form-group" style="margin-top: 8px;">
+              <label for="maker-comments-input">যাচাইকরণ মন্তব্য (Comments):</label>
+              <textarea id="maker-comments-input" class="form-control" placeholder="লাইন ক্রপ দেখে ফিল্ডসমূহ যাচাই করা হলো।"></textarea>
+            </div>
+            <button class="btn btn-primary" id="btn-maker-submit" style="margin-top: 10px; width: 100%;">
+              মেকার পর্যালোচনা জমা দিন (Submit Maker Verification)
+            </button>
+          </div>
+
+          <!-- Checker Approval Box -->
+          <div style="background: var(--bg-card); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #60a5fa; margin-bottom: 8px;">
+              ২য় ধাপ: চেকার কর্মকর্তার অনুমোদন ও রেকর্ড লক (Checker Approval)
+            </div>
+            <div class="form-group">
+              <label for="checker-id-input">সুপারভাইজার আইডি (Checker ID):</label>
+              <input type="text" id="checker-id-input" class="form-control" value="SUP_CHECKER_FATIMA">
+            </div>
+            <div class="form-group" style="margin-top: 8px;">
+              <label for="checker-comments-input">অনুমোদন মন্তব্য (Comments):</label>
+              <textarea id="checker-comments-input" class="form-control" placeholder="সার্বিক গাণিতিক হিস্যা ও সিল নিরীক্ষা সম্পন্ন। অনুমোদিত।"></textarea>
+            </div>
+            <button class="btn btn-accent" id="btn-checker-approve" style="margin-top: 10px; width: 100%;">
+              চেকার অনুমোদন ও চিরতরে লক করুন (Approve & Cryptographically Lock)
+            </button>
+          </div>
+
+          <!-- Audit Trail Timeline -->
+          <div>
+            <h4 style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;">অডিট ট্রেইল ইতিহাস (Audit Ledger Timeline)</h4>
+            <div class="timeline" id="audit-timeline">
+              <div style="font-size: 0.75rem; color: var(--text-muted);">কোনো অডিট ইভেন্ট এখনও রেকর্ড হয়নি।</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- BhumiLens Bangla Knowledge Assistant (RAG) Drawer -->
+  <aside class="chat-drawer" id="chat-drawer">
+    <div class="chat-header">
+      <h3 style="font-size: 0.95rem; font-weight: 700;">💬 ভূমি সহকারী (Knowledge RAG)</h3>
+      <button class="btn btn-secondary" id="btn-close-rag" style="padding: 4px 8px;">✕</button>
+    </div>
+    <div class="chat-quick-queries">
+      <span class="quick-chip" data-query="সাফ-কবলা ও বায়নাপত্রের পার্থক্য কী?">সাফ-কবলা বনাম বায়নাপত্র</span>
+      <span class="quick-chip" data-query="১৬ আনা হিস্যা ও গন্ডা কীভাবে বের করে?">১৬ আনা হিস্যা নিয়ম</span>
+      <span class="quick-chip" data-query="সিএস, এসএ ও আরএস খতিয়ানের পার্থক্য কী?">খতিয়ান জরিপ</span>
+      <span class="quick-chip" id="chip-explain-current">📄 বর্তমান দলিলটি ব্যাখ্যা করুন</span>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-bubble assistant">
+        আসসালামু আলাইকুম! আমি ভূমি সহকারী (BhumiLens Knowledge Assistant)। জমি রেজিস্ট্রি, দলিল তৈরি, ১৬-আনা হিস্যা বা খতিয়ান জরিপ নিয়ে আপনার যেকোনো প্রশ্ন করুন।
+      </div>
+    </div>
+    <div class="chat-footer">
+      <input type="text" id="chat-input" class="form-control" placeholder="প্রশ্ন লিখুন (যেমন: হেবা দলিলের নিয়ম কী?)...">
+      <button class="btn btn-primary" id="btn-send-chat">পাঠান</button>
+    </div>
+  </aside>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -19,7 +19,7 @@ import torch
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 
 from backend.api import (
     document_router,
@@ -58,6 +58,11 @@ outputs_dir = WORKSPACE_ROOT / "outputs"
 outputs_dir.mkdir(parents=True, exist_ok=True)
 app.mount("/outputs", StaticFiles(directory=str(outputs_dir)), name="outputs")
 
+# Mount frontend/ directory for UI assets
+frontend_dir = WORKSPACE_ROOT / "frontend"
+if frontend_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(frontend_dir)), name="static")
+
 # Mount API v1 Routers
 app.include_router(document_router, prefix="/api/v1")
 app.include_router(processing_router, prefix="/api/v1")
@@ -67,12 +72,25 @@ app.include_router(audit_router, prefix="/api/v1")
 app.include_router(knowledge_router, prefix="/api/v1")
 
 @app.get("/")
-async def root():
-    """Root endpoint providing system metadata and API links."""
+@app.get("/workbench")
+async def root(request: Request):
+    """
+    Serves the Human-in-the-Loop Workbench UI when requested via browser/HTML,
+    or returns system API metadata when JSON is requested.
+    """
+    accept = request.headers.get("accept", "")
+    index_path = WORKSPACE_ROOT / "frontend" / "index.html"
+    
+    # Return HTML UI if browser or not explicitly requesting JSON
+    if "text/html" in accept or "application/json" not in accept:
+        if index_path.exists():
+            return FileResponse(str(index_path))
+
     return {
         "system": "BhumiLens AI + BhumiGuard",
         "version": "1.0.0",
         "status": "OPERATIONAL",
+        "workbench_ui": "/workbench",
         "documentation": "/docs",
         "endpoints": {
             "health": "/health",
